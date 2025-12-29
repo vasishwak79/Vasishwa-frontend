@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>School Lost & Found | Home</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1 class="site-title">School Lost & Found</h1>
+
+    <nav class="nav-right">
+      <a href="index.html" class="nav-btn active">Home</a>
+      <a href="login.html" class="nav-btn">Login</a>
+
+      <!-- User Dropdown (visible after login) -->
+      <div id="user-menu" class="user-menu hidden">
+        <button class="user-btn" id="userBtn">
+          <span id="username-display">User</span> ▼
+        </button>
+        <div class="dropdown-content" id="userDropdown">
+          <!-- You will specify menu items next -->
+        </div>
+      </div>
+          <!-- User Dropdown (Users only) -->
+      <div id="user-menu" class="user-menu hidden">
+        <button class="user-btn" id="userBtn">
+          <span id="username-display">User</span> ▼
+        </button>
+        <div class="dropdown-content" id="userDropdown">
+          <a href="profile.html">Profile</a>
+          <a href="#" id="logoutBtn">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="home">
+      <img 
+        src="undraw_searching_no1g.svg"
+        alt="Lost and Found"
+        class="home-image"
+      >
+
+      <h2 class="home-title" style="color:white">Welcome to the School Lost and Found Website!</h2>
+
+      <p class="home-subtitle" style="color:white">
+        Lost something? Found something? Use this site to report found items, search for belongings, or claim what’s yours.
+      </p>
+
+      <div class="home-buttons">
+        <a href="upload.html" class="home-btn">Report an Item</a>
+        <a href="items.html" class="home-btn">Search for an Item</a>
+      </div>
+
+      <h2>Recently Added Items</h2>
+      <div id="recent-items" class="item-grid"></div>
+    </section>
+  </main>
+  <script>
+    // Show username if user is logged in
+    const userMenu = document.getElementById("user-menu");
+    const usernameDisplay = document.getElementById("username-display");
+    const savedUser = localStorage.getItem("username");
+
+    if (savedUser) {
+      usernameDisplay.textContent = savedUser;
+      userMenu.classList.remove("hidden");
+    }
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("username");
+        localStorage.removeItem("userToken");
+        window.location.reload();
+      });
+    }
+  </script>
+</body>
+</html>

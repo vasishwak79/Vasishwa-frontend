@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report Found Item</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Report a Found Item</h1>
+  </header>
+
+  <main>
+    <form id="upload-form" enctype="multipart/form-data">
+      <input type="text" name="title" placeholder="Item Title" required>
+      <textarea name="description" placeholder="Description" required></textarea>
+      <input type="text" name="location" placeholder="Where was it found?" required>
+      <input type="file" name="photo" accept="image/*">
+      <button type="submit">Submit Item</button>
+    </form>
+    <p id="upload-message"></p>
+  </main>
+
+  <div class="bottom-nav">
+    <a class="btn" href="index.html">🏠 Home</a>
+    <a class="btn" href="items.html">🔍 View Items</a>
+  </div>
+</body>
+</html>
