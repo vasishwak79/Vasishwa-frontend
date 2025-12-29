@@ -1,98 +1,88 @@
 const pendingContainer = document.getElementById("pending-items");
 
-// Get admin token from localStorage
+// Get real token
 const token = localStorage.getItem("adminToken");
+
 if (!token) {
-  alert("Admin login required");
-  window.location.href = "admin_login.html";
+  alert("Not authorized. Please log in.");
+  window.location.href = "login.html";
 }
-// Fetch and display pending items and claims
-async function fetchPending() {
+
+async function fetchPendingItems() {
   try {
+    const res = await fetch("http://localhost:4000/api/pending", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error("Could not fetch pending items");
+
+    const items = await res.json();
     pendingContainer.innerHTML = "";
 
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
-
-    // Fetch pending items
-    const resItems = await fetch("http://localhost:4000/api/pending", {
-      headers
-    });
-
-    if (!resItems.ok) {
-      throw new Error("Pending items request failed");
-    }
-
-    const items = await resItems.json();
-
-    // Fetch pending claims
-    const resClaims = await fetch("http://localhost:4000/api/claims/pending", {
-      headers
-    });
-
-    if (!resClaims.ok) {
-      throw new Error("Pending claims request failed");
-    }
-
-    const claims = await resClaims.json();
-
-    if (items.length === 0 && claims.length === 0) {
-      pendingContainer.innerHTML = "<p>No pending items or claims.</p>";
+    if (items.length === 0) {
+      pendingContainer.innerHTML = "<p>No pending items.</p>";
       return;
     }
 
-    // Render items
     items.forEach(item => {
       const div = document.createElement("div");
       div.className = "item-card";
       div.innerHTML = `
-        <h3>${item.title}</h3>
-        <p>${item.description}</p>
-        <p>Location: ${item.location}</p>
-        ${item.photo ? `<img src="http://localhost:4000${item.photo}" />` : ""}
-        <button onclick="approveItem(${item.id})">Approve Item</button>
+        <div class="item-info">
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+          <p><strong>Location:</strong> ${item.location}</p>
+        </div>
+
+        <div class="item-image">
+          ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
+        </div>
+
+        <div class="item-actions">
+          <button class="approve-btn" onclick="approveItem(${item.id})">Approve</button>
+          <button class="deny-btn" onclick="denyItem(${item.id})">Deny</button>
+        </div>
       `;
       pendingContainer.appendChild(div);
     });
-
-    // Render claims
-    claims.forEach(claim => {
-      const div = document.createElement("div");
-      div.className = "claim-card";
-      div.innerHTML = `
-        <h3>Claim by ${claim.name}</h3>
-        <p>Reason: ${claim.reason}</p>
-        <p>Teacher: ${claim.teacher}</p>
-        <p>User: ${claim.username}</p>
-        <button onclick="approveClaim(${claim.id})">Approve Claim</button>
-      `;
-      pendingContainer.appendChild(div);
-    });
-
   } catch (err) {
     console.error(err);
-    pendingContainer.innerHTML = "<p>Error loading pending items or claims.</p>";
+    pendingContainer.innerHTML = "<p>Error loading pending items.</p>";
   }
 }
 
-// Approve item
 async function approveItem(id) {
-  await fetch(`http://localhost:4000/api/approve/${id}`, {
-    method: "PUT",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  fetchPending();
+  try {
+    const res = await fetch(`http://localhost:4000/api/approve/${id}`, {
+      method: "PUT",
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error("Could not approve item");
+
+    fetchPendingItems();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to approve item");
+  }
 }
 
-// Approve claim
-async function approveClaim(id) {
-  await fetch(`http://localhost:4000/api/claims/approve/${id}`, {
-    method: "PUT",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  fetchPending();
+async function denyItem(id) {
+  try {
+    const res = await fetch(`http://localhost:4000/api/deny/${id}`, {
+      method: "PUT",
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error("Could not deny item");
+
+    fetchPendingItems();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to deny item");
+  }
 }
 
-// Load on page open
-fetchPending();
+fetchPendingItems();
