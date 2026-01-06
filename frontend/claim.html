@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Claim Item</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="claim.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Claim an Item</h1>
+    <nav class="nav-right">
+      <a href="index.html" class="nav-btn">Home</a>
+      <div id="user-menu" class="user-menu">
+        <button class="user-btn" id="userBtn">
+          <span id="username-display">User</span> ▼
+        </button>
+        <div class="dropdown-content" id="userDropdown">
+          <a href="#" id="logoutBtn">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <form id="claim-form">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <textarea name="reason" placeholder="Why this item belongs to you" required></textarea>
+      <input type="text" name="teacher" placeholder="3rd Period Teacher" required>
+      <button type="submit">Submit Claim</button>
+    </form>
+    <p id="claim-message"></p>
+  </main>
+
+  <div class="bottom-nav">
+    <a class="btn" href="index.html">🏠 Home</a>
+    <a class="btn" href="items.html">🔍 View Items</a>
+  </div>
+</body>
+</html>
