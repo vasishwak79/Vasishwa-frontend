@@ -2,23 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="style_admin.css">
-  <script src="admin.js" defer></script>
+  <title>Admin Review | Lost & Found</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Admin Dashboard</h1>
-    <button id="logoutBtn">Logout</button>
-  </header>
 
-  <main>
-    <h2>Pending Items & Claims</h2>
-    <div id="pending-items" class="item-grid"></div>
-  </main>
+<header>
+  <h1>Lost & Found – Admin</h1>
+  <nav>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="items.html" class="nav-btn">Items</a>
+    <a href="upload.html" class="nav-btn">Report Item</a>
+    <button id="logoutBtn" class="nav-btn">Logout</button>
+  </nav>
+</header>
 
-  <div class="bottom-nav">
-    <a class="btn" href="index.html">Home</a>
-  </div>
+<main class="admin-container">
+  <h2 class="page-title">Pending Item Reports</h2>
+  <p class="page-subtitle">
+    Review reported items and approve or deny them.
+  </p>
+
+  <!-- Admin items load here -->
+  <div id="pending-items" class="admin-grid"></div>
+</main>
+
+<script src="admin.js"></script>
 </body>
 </html>
