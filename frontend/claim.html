@@ -2,39 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Claim Item</title>
+  <title>Claim Item | Lost & Found</title>
   <link rel="stylesheet" href="style.css">
   <script src="claim.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Claim an Item</h1>
-    <nav class="nav-right">
-      <a href="index.html" class="nav-btn">Home</a>
-      <div id="user-menu" class="user-menu">
-        <button class="user-btn" id="userBtn">
-          <span id="username-display">User</span> ▼
-        </button>
-        <div class="dropdown-content" id="userDropdown">
-          <a href="#" id="logoutBtn">Logout</a>
-        </div>
+
+<header>
+  <h1>Lost & Found</h1>
+  <nav class="nav-right">
+    <a href="index.html" class="nav-btn">Home</a>
+    <div id="user-menu" class="user-menu">
+      <button class="user-btn">
+        <span id="username-display">User</span> ▼
+      </button>
+      <div class="dropdown-content">
+        <a href="#" id="logoutBtn">Logout</a>
       </div>
-    </nav>
-  </header>
+    </div>
+  </nav>
+</header>
 
-  <main>
-    <form id="claim-form">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <textarea name="reason" placeholder="Why this item belongs to you" required></textarea>
-      <input type="text" name="teacher" placeholder="3rd Period Teacher" required>
-      <button type="submit">Submit Claim</button>
-    </form>
-    <p id="claim-message"></p>
-  </main>
+<section class="container">
+  <h2 class="white-title">Claim an Item</h2>
 
-  <div class="bottom-nav">
-    <a class="btn" href="index.html">🏠 Home</a>
-    <a class="btn" href="items.html">🔍 View Items</a>
-  </div>
+  <form id="claim-form" class="card form login-card">
+    <label class="form-label">Your Name</label>
+    <input class="input-small" name="name" required>
+
+    <label class="form-label">Why is this yours?</label>
+    <textarea class="input-small" name="reason" required></textarea>
+
+    <label class="form-label">3rd Period Teacher</label>
+    <input class="input-small" name="teacher" required>
+
+    <button class="btn-primary">Submit Claim</button>
+  </form>
+
+  <p id="claim-message" class="feedback"></p>
+</section>
+
 </body>
 </html>
