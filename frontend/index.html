@@ -53,29 +53,5 @@
       <div id="recent-items" class="item-grid"></div>
     </section>
   </main>
-
-  <script>
-    const userMenu = document.getElementById("user-menu");
-    const usernameDisplay = document.getElementById("username-display");
-    const loginBtn = document.getElementById("loginBtn");
-
-    const username = localStorage.getItem("username");
-    const userToken = localStorage.getItem("userToken");
-
-    // If logged in
-    if (username && userToken) {
-      usernameDisplay.textContent = username;
-      userMenu.classList.remove("hidden");
-      loginBtn.style.display = "none";
-    }
-
-    // Logout
-    const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("username");
-      localStorage.removeItem("userToken");
-      window.location.reload();
-    });
-  </script>
 </body>
 </html>
