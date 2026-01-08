@@ -54,43 +54,7 @@
 
 </section>
 
-<script>
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const msg = document.getElementById("msg");
-  msg.textContent = "";
-
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData);
-
-  try {
-    const res = await fetch("http://localhost:4000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-
-    const result = await res.json();
-
-    if (result.success && result.token) {
-      // EXACTLY what admin.js expects
-      sessionStorage.setItem("adminToken", result.token);
-
-      // Redirect to admin page
-      window.location.href = "admin.html";
-    } else {
-      msg.textContent = "Invalid username or password.";
-    }
-
-  } catch (err) {
-    console.error(err);
-    msg.textContent = "Server error. Please try again.";
-  }
-});
-</script>
+<script src="admin_login.js"></script>
 
 
 </body>
