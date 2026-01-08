@@ -2,23 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>All Lost & Found Items</title>
+  <title>Items | Lost & Found</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>All Lost & Found Items</h1>
-  </header>
 
-  <main>
-    <input type="text" id="search-bar" placeholder="Search items...">
-    <div id="items-list" class="item-grid"></div>
-  </main>
+<header>
+  <h1>Lost & Found</h1>
+  <nav>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="upload.html" class="nav-btn">Report Item</a>
+    <a href="admin_login.html" class="nav-btn">Admin</a>
+  </nav>
+</header>
 
-  <div class="bottom-nav">
-    <a class="btn" href="index.html">🏠 Home</a>
-    <a class="btn" href="upload.html">➕ Report Found Item</a>
+<main class="items-container">
+  <h2 class="page-title">Approved Items</h2>
+  <p class="page-subtitle">
+    Browse items that have been reviewed and approved.
+  </p>
+
+  <div class="items-page">
+    <div class="items-grid" id="itemsGrid"></div>
   </div>
+</main>
+
+<script src="script.js" defer></script>
+
 </body>
 </html>
