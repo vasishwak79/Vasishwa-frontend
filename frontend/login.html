@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Login</title>
-  <link rel="stylesheet" href="style_login.css">
+  <meta charset="UTF-8">
+  <title>User Login | Lost & Found</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -14,24 +15,28 @@
 </header>
 
 <section class="container">
-  <h2 style="color:white"> Login</h2>
-  <form id="loginForm" class="card form">
-    <input name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
+  <div class="login-wrapper">
+    <h2 class="white-title">User Login</h2>
 
-  <p class="signup-text">
-    Don’t have an account?
-    <a href="signup.html">Sign Up</a>
-  </p>
+    <form id="loginForm" class="card form login-card">
+      <label class="form-label">Username</label>
+      <input class="input-small" name="username" required>
 
-  <p id="msg"></p>
+      <label class="form-label">Password</label>
+      <input class="input-small" type="password" name="password" required>
+
+      <button class="btn-primary">Login</button>
+    </form>
+
+    <p class="signup-text">
+      Don’t have an account?
+      <a href="signup.html">Sign Up</a>
+    </p>
+
+    <p id="msg" class="feedback"></p>
+  </div>
 </section>
 
-
-<!-- External JS -->
 <script src="script_login.js"></script>
-
 </body>
 </html>
