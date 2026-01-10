@@ -14,12 +14,12 @@ async function fetchPending() {
 
     const headers = { Authorization: `Bearer ${token}` };
 
-    // Pending items
+    // Fetch pending items
     const resItems = await fetch("http://localhost:4000/api/pending", { headers });
     if (!resItems.ok) throw new Error("Failed to fetch pending items");
     const items = await resItems.json();
 
-    // Pending claims
+    // Fetch pending claims
     const resClaims = await fetch("http://localhost:4000/api/claims/pending", { headers });
     if (!resClaims.ok) throw new Error("Failed to fetch pending claims");
     const claims = await resClaims.json();
@@ -36,9 +36,10 @@ async function fetchPending() {
       div.innerHTML = `
         <h3>${item.title}</h3>
         <p>${item.description}</p>
-        <p>Location: ${item.location}</p>
+        <p><strong>Location:</strong> ${item.location}</p>
         ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
         <button onclick="approveItem(${item.id})">Approve Item</button>
+        <button onclick="declineItem(${item.id})">Decline Item</button>
       `;
       pendingContainer.appendChild(div);
     });
@@ -53,6 +54,7 @@ async function fetchPending() {
         <p>Teacher: ${claim.teacher}</p>
         <p>User: ${claim.username}</p>
         <button onclick="approveClaim(${claim.id})">Approve Claim</button>
+        <button onclick="declineClaim(${claim.id})">Decline Claim</button>
       `;
       pendingContainer.appendChild(div);
     });
@@ -78,6 +80,21 @@ async function approveItem(id) {
   }
 }
 
+// Decline item (DELETE)
+async function declineItem(id) {
+  try {
+    const res = await fetch(`http://localhost:4000/api/decline/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Failed to decline item");
+    fetchPending();
+  } catch (err) {
+    console.error(err);
+    alert("Could not decline item");
+  }
+}
+
 // Approve claim
 async function approveClaim(id) {
   try {
@@ -90,6 +107,21 @@ async function approveClaim(id) {
   } catch (err) {
     console.error(err);
     alert("Could not approve claim");
+  }
+}
+
+// Decline claim (DELETE)
+async function declineClaim(id) {
+  try {
+    const res = await fetch(`http://localhost:4000/api/claims/decline/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Failed to decline claim");
+    fetchPending();
+  } catch (err) {
+    console.error(err);
+    alert("Could not decline claim");
   }
 }
 
