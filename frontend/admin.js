@@ -1,11 +1,22 @@
 const pendingContainer = document.getElementById("pending-items");
 
-// Get admin token
+// ===================== ADMIN PAGE PROTECTION =====================
 const token = localStorage.getItem("adminToken");
+
 if (!token) {
-  alert("Admin login required");
+  alert("Admin access required");
   window.location.href = "admin_login.html";
 }
+
+// ===================== LOGOUT =====================
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("adminToken");
+    window.location.href = "admin_login.html";
+  });
+}
+
 
 // Fetch pending items and claims
 async function fetchPending() {
