@@ -7,7 +7,9 @@
   <script src="script.js" defer></script>
 </head>
 
-<body>
+<body class="home-page">
+
+  <!-- Header / Navigation -->
   <header>
     <h1 class="site-title">School Lost & Found</h1>
 
@@ -28,30 +30,53 @@
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <section class="home">
-      <img 
-        src="undraw_searching_no1g.svg"
-        alt="Lost and Found"
-        class="home-image"
-      >
+    <div class="container">
+      <section class="home">
 
-      <h2 class="home-title" style="color:white">
-        Welcome to the School Lost and Found Website!
-      </h2>
+        <h2 class="home-title">
+          Welcome to the School Lost and Found Website!
+        </h2>
 
-      <p class="home-subtitle" style="color:white">
-        Lost something? Found something? Use this site to report found items, search for belongings, or claim what’s yours.
-      </p>
+        <p class="home-subtitle">
+          Lost something? Found something? Use this site to report found items, search for belongings, or claim what’s yours.
+        </p>
 
-      <div class="home-buttons">
-        <a href="upload.html" class="home-btn">Report an Item</a>
-        <a href="items.html" class="home-btn">Search for an Item</a>
-      </div>
+        <div class="home-buttons">
+          <a href="upload.html" class="home-btn">Report an Item</a>
+          <a href="items.html" class="home-btn">Search for an Item</a>
+        </div>
 
-      <h2>Recently Added Items</h2>
-      <div id="recent-items" class="item-grid"></div>
-    </section>
+        <h2 class="home-title ">Recently Added Items</h2>
+        <div id="recent-items" class="item-grid">
+          <div class="item-card">
+            <img src="asdf.png" alt="asdf" class="card-img">
+            <h3>asdf</h3>
+            <p>asdfasd</p>
+            <p>Location: asdfasd</p>
+            <button class="claim-btn">Claim</button>
+          </div>
+
+          <div class="item-card">
+            <img src="item.png" alt="item" class="card-img">
+            <h3>item</h3>
+            <p>item</p>
+            <p>Location: where</p>
+            <button class="claim-btn">Claim</button>
+          </div>
+
+          <div class="item-card">
+            <img src="random.png" alt="random" class="card-img">
+            <h3>random</h3>
+            <p>random</p>
+            <p>Location: random</p>
+            <button class="claim-btn">Claim</button>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
+
 </body>
 </html>
