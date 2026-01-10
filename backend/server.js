@@ -244,6 +244,28 @@ app.put("/api/claims/approve/:id", async (req, res) => {
   res.json({ success: true });
 });
 
+// ------------------- DELETE / DECLINE ITEMS -------------------
+app.delete("/api/decline/:id", async (req, res) => {
+  try {
+    await db.run("DELETE FROM items WHERE id = ?", req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Decline item error:", err);
+    res.status(500).json({ success: false, message: "Could not decline item" });
+  }
+});
+
+// ------------------- DELETE / DECLINE CLAIMS -------------------
+app.delete("/api/claims/decline/:id", async (req, res) => {
+  try {
+    await db.run("DELETE FROM claims WHERE id = ?", req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Decline claim error:", err);
+    res.status(500).json({ success: false, message: "Could not decline claim" });
+  }
+});
+
 // ------------------- START SERVER -------------------
 app.listen(4000, () => {
   console.log("Backend running at http://localhost:4000");
