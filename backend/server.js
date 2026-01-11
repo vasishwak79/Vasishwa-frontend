@@ -15,12 +15,11 @@ app.use("/uploads", express.static("uploads"));
 
 let db;
 
-// ------------------- INIT DATABASE -------------------
+/* ===================== INIT DATABASE ===================== */
 (async () => {
   db = await initDB();
   console.log("Database connected");
 
-  // USERS
   await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,7 +28,6 @@ let db;
     );
   `);
 
-  // ADMINS
   await db.exec(`
     CREATE TABLE IF NOT EXISTS admins (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,7 +36,6 @@ let db;
     );
   `);
 
-  // ITEMS
   await db.exec(`
     CREATE TABLE IF NOT EXISTS items (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,7 +48,6 @@ let db;
     );
   `);
 
-  // CLAIMS
   await db.exec(`
     CREATE TABLE IF NOT EXISTS claims (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +60,6 @@ let db;
     );
   `);
 
-  // DEFAULT ADMIN
   const admin = await db.get(
     "SELECT * FROM admins WHERE username = ?",
     "admin"
@@ -81,42 +76,56 @@ let db;
   }
 })();
 
-// ------------------- ITEMS -------------------
+/* ===================== ITEMS ===================== */
 app.get("/api/items", async (req, res) => {
   const recent = req.query.recent;
+
   const items = recent
     ? await db.all(
         "SELECT * FROM items WHERE status='approved' ORDER BY createdAt DESC LIMIT 3"
       )
-    : await db.all("SELECT * FROM items WHERE status='approved'");
+    : await db.all(
+        "SELECT * FROM items WHERE status='approved'"
+      );
+
   res.json(items);
 });
 
-app.post("/api/items", upload.single("photo"), (req, res) => {
-  const { title, description, location } = req.body;
-  const photo = req.file ? `/uploads/${req.file.filename}` : null;
+app.post("/api/items", upload.single("photo"), async (req, res) => {
+  try {
+    const { title, description, location } = req.body;
+    const photo = req.file ? `/uploads/${req.file.filename}` : null;
 
-  if (!title || !description || !location) {
-    return res.json({ success: false, message: "All fields are required" });
-  }
-
-  const sql = `
-    INSERT INTO items (title, description, location, photo, status, createdAt)
-    VALUES (?, ?, ?, ?, 'pending', datetime('now'))
-  `;
-
-  db.run(sql, [title, description, location, photo], function (err) {
-    if (err) {
-      console.error("Insert error:", err);
-      return res.status(500).json({ success: false, message: "Insert failed" });
+    if (!title || !description || !location) {
+      return res.json({ success: false, message: "All fields are required" });
     }
 
-    console.log(`Item inserted with ID: ${this.lastID}`);
-    res.json({ success: true, message: "Item submitted for review!" });
-  });
+    await db.run(
+      `
+      INSERT INTO items (title, description, location, photo, status, createdAt)
+      VALUES (?, ?, ?, ?, 'pending', datetime('now'))
+      `,
+      title,
+      description,
+      location,
+      photo
+    );
+
+    res.json({
+      success: true,
+      message: "✅ Item submitted for review!"
+    });
+
+  } catch (err) {
+    console.error("Item upload error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Could not submit item"
+    });
+  }
 });
 
-// ------------------- ADMIN LOGIN -------------------
+/* ===================== ADMIN LOGIN ===================== */
 app.post("/api/admin/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -136,7 +145,7 @@ app.post("/api/admin/login", async (req, res) => {
   res.json({ success: true, token });
 });
 
-// ------------------- USER LOGIN -------------------
+/* ===================== USER LOGIN ===================== */
 app.post("/api/user/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -161,7 +170,7 @@ app.post("/api/user/login", async (req, res) => {
   });
 });
 
-// ------------------- USER SIGNUP -------------------
+/* ===================== USER SIGNUP ===================== */
 app.post("/api/user/signup", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -190,12 +199,12 @@ app.post("/api/user/signup", async (req, res) => {
     res.json({ success: true });
 
   } catch (err) {
-    console.error("SIGNUP ERROR:", err);
+    console.error("Signup error:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
-// ------------------- ADMIN ITEMS (NO AUTH YET) -------------------
+/* ===================== ADMIN ITEMS ===================== */
 app.get("/api/pending", async (req, res) => {
   const items = await db.all(
     "SELECT * FROM items WHERE status='pending'"
@@ -211,22 +220,45 @@ app.put("/api/approve/:id", async (req, res) => {
   res.json({ success: true });
 });
 
-// ------------------- CLAIMS -------------------
+app.delete("/api/decline/:id", async (req, res) => {
+  try {
+    await db.run(
+      "DELETE FROM items WHERE id=?",
+      req.params.id
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Decline item error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Could not decline item"
+    });
+  }
+});
+
+/* ===================== CLAIMS ===================== */
 app.post("/api/claims", async (req, res) => {
   const { username, name, reason, teacher } = req.body;
 
-  if (!name || !reason || !teacher)
-    return res.status(400).json({ success: false });
+  if (!name || !reason || !teacher) {
+    return res.json({ success: false, message: "Missing fields" });
+  }
 
   await db.run(
-    "INSERT INTO claims (username, name, reason, teacher) VALUES (?, ?, ?, ?)",
+    `
+    INSERT INTO claims (username, name, reason, teacher)
+    VALUES (?, ?, ?, ?)
+    `,
     username || "anonymous",
     name,
     reason,
     teacher
   );
 
-  res.json({ success: true });
+  res.json({
+    success: true,
+    message: "✅ Claim submitted successfully!"
+  });
 });
 
 app.get("/api/claims/pending", async (req, res) => {
@@ -244,29 +276,23 @@ app.put("/api/claims/approve/:id", async (req, res) => {
   res.json({ success: true });
 });
 
-// ------------------- DELETE / DECLINE ITEMS -------------------
-app.delete("/api/decline/:id", async (req, res) => {
-  try {
-    await db.run("DELETE FROM items WHERE id = ?", req.params.id);
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Decline item error:", err);
-    res.status(500).json({ success: false, message: "Could not decline item" });
-  }
-});
-
-// ------------------- DELETE / DECLINE CLAIMS -------------------
 app.delete("/api/claims/decline/:id", async (req, res) => {
   try {
-    await db.run("DELETE FROM claims WHERE id = ?", req.params.id);
+    await db.run(
+      "DELETE FROM claims WHERE id=?",
+      req.params.id
+    );
     res.json({ success: true });
   } catch (err) {
     console.error("Decline claim error:", err);
-    res.status(500).json({ success: false, message: "Could not decline claim" });
+    res.status(500).json({
+      success: false,
+      message: "Could not decline claim"
+    });
   }
 });
 
-// ------------------- START SERVER -------------------
+/* ===================== START SERVER ===================== */
 app.listen(4000, () => {
   console.log("Backend running at http://localhost:4000");
 });
