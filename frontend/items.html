@@ -3,28 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>Items | Lost & Found</title>
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_general.css">
+  <link rel="stylesheet" href="style_items.css">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body class="items-page">
 
 <header>
-  <h1>Lost & Found</h1>
-  <nav>
+  <h1 class="site-title">School Lost & Found</h1>
+  <nav class="nav-right">
     <a href="index.html" class="nav-btn">Home</a>
     <a href="upload.html" class="nav-btn">Report Item</a>
+    <a href="items.html" class="nav-btn active">View Items</a>
+    <a href="claim.html" class="nav-btn">Claim Items</a>
     <a href="admin_login.html" class="nav-btn">Admin</a>
+
+    <div id="user-menu" class="user-menu hidden">
+      <button class="user-btn">
+        <span id="username-display">User</span> ▼
+      </button>
+      <div class="dropdown-content">
+        <a href="login.html">User Login</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
   </nav>
 </header>
 
-<main class="items-container">
-  <h2 class="page-title">Approved Items</h2>
+<main class="container">
+
+    <h2 class="page-title">Approved Items</h2>
   <p class="page-subtitle">
     Browse items that have been reviewed and approved.
   </p>
 
-  <div class="items-page">
-    <div class="items-grid" id="itemsGrid"></div>
-  </div>
+    <input 
+    type="text" 
+    class="search-bar-items"
+    id="search-bar" 
+    placeholder="Search items...">
+
+    <div id="items-list" class="item-grid"></div>
+
 </main>
 
 <script src="script.js" defer></script>
