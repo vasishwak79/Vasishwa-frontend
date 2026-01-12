@@ -2,35 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sign Up | Lost & Found</title>
-  <link rel="stylesheet" href="style.css">
+  <title>User Signup</title>
+  <link rel="stylesheet" href="style_signup.css">
+  <link rel="stylesheet" href="style_general.css">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
 
-<header>
-  <h1>Lost & Found</h1>
-  <nav>
-    <a href="index.html" class="nav-btn">Home</a>
-  </nav>
-</header>
+<body class="signup-page">
 
-<section class="container">
-  <div class="login-wrapper">
-    <h2 class="white-title">Create Account</h2>
+<!-- Navigation Bar -->
+  <header>
+    <h1 class="site-title">School Lost & Found</h1>
 
-    <form id="signupForm" class="card form login-card">
-      <label class="form-label">Username</label>
-      <input class="input-small" name="username" required>
+    <nav class="nav-right">
+      <a href="index.html" class="nav-btn ">Home</a>
+      <a href="items.html" class="nav-btn ">Items</a>
+      <a href="admin.html" class="nav-btn ">Admin</a>
 
-      <label class="form-label">Password</label>
-      <input class="input-small" type="password" name="password" required>
+      <!-- User Dropdown (ONLY when logged in) -->
+      <div id="user-menu" class="user-menu hidden">
+        <button class="user-btn">
+          <span id="username-display">User</span> ▼
+        </button>
+        <div class="dropdown-content">
+          <a href="login.html">User Login</a>
+          <a href="#" id="logoutBtn">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-      <button class="btn-primary">Sign Up</button>
+<!-- main signup page container -->
+ <main class="container">
+  <section>
+    <!-- page title -->
+    <h2 class="user-style">User Signup</h2>
+
+    <!-- signup form card -->
+    <form id="signupForm" aria-label="Sign Up Form">
+
+      <section>
+        <label for="username" class="form-label">Username: </label>
+
+        <input 
+          id="username"
+          name="username" 
+          type="text" 
+          class="input-small"
+          placeholder="Enter username" 
+          required
+        >
+
+      </section>
+
+      <section>
+        <label for="password" class="form-label">Password: </label>
+
+        <input 
+          id="password"
+          name="password" 
+          type="password" 
+          class="input-small"
+          placeholder="Enter password" 
+          required
+        >
+        
+      </section>
+
+      <section>
+        <button type="submit" class="btn-primary">Sign Up</button>
+      </section>
+
     </form>
-
+    <!-- errer or success message-->
     <p id="msg" class="feedback"></p>
-  </div>
-</section>
+
+  </section>
+
+</main>
+
+<footer>
+  <p class="fake-copy">© 2026 School Lost & Found</p>
+</footer>
 
 <script src="signup.js"></script>
 </body>
