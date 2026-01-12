@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <title>School Lost & Found | Home</title>
+  <link rel="stylesheet" href="style_general.css">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -15,7 +17,7 @@
 
     <nav class="nav-right">
       <a href="index.html" class="nav-btn active">Home</a>
-      <a href="login.html" class="nav-btn" id="loginBtn">Login</a>
+      <a href="admin.html" class="nav-btn">Admin</a>
 
       <!-- User Dropdown (ONLY when logged in) -->
       <div id="user-menu" class="user-menu hidden">
@@ -23,7 +25,7 @@
           <span id="username-display">User</span> ▼
         </button>
         <div class="dropdown-content">
-          <a href="profile.html">Profile</a>
+          <a href="login.html">User Login</a>
           <a href="#" id="logoutBtn">Logout</a>
         </div>
       </div>
@@ -34,9 +36,10 @@
   <main>
     <div class="container">
       <section class="home">
-
-        <h2 class="home-title">
-          Welcome to the School Lost and Found Website!
+        
+        <h2>
+          <span class="home-title">Welcome to the</span>
+          <span class="home-title-highlight">School Lost and Found Website!</span>
         </h2>
 
         <p class="home-subtitle">
@@ -46,37 +49,39 @@
         <div class="home-buttons">
           <a href="upload.html" class="home-btn">Report an Item</a>
           <a href="items.html" class="home-btn">Search for an Item</a>
+          <a href="claim.html" class="home-btn">Claim an Item</a>
         </div>
 
         <h2 class="home-title ">Recently Added Items</h2>
-        <div id="recent-items" class="item-grid">
-          <div class="item-card">
-            <img src="asdf.png" alt="asdf" class="card-img">
-            <h3>asdf</h3>
-            <p>asdfasd</p>
-            <p>Location: asdfasd</p>
-            <button class="claim-btn">Claim</button>
-          </div>
-
-          <div class="item-card">
-            <img src="item.png" alt="item" class="card-img">
-            <h3>item</h3>
-            <p>item</p>
-            <p>Location: where</p>
-            <button class="claim-btn">Claim</button>
-          </div>
-
-          <div class="item-card">
-            <img src="random.png" alt="random" class="card-img">
-            <h3>random</h3>
-            <p>random</p>
-            <p>Location: random</p>
-            <button class="claim-btn">Claim</button>
-          </div>
-        </div>
+        <div id="recent-items" class="item-grid"></div>
       </section>
+
+      <section class="home1">
+        <p class="home-title-1">
+          Log into your account by clicking at the user button in the Navigation Menu or
+          <a href="login.html" class="link1">Click Here to Login.</a>
+        </p>
+
+        <p class="home-title-1">
+          New to the website?
+          <a href="signup.html" class="link1">Click Here to Sign Up.</a>
+        </p>
+
+        <p class="home-title-1">
+          Admins, login using the Admin button in the Navigation bar or 
+          <a href="admin_login.html" class="link1">Login by Clicking Here.</a>
+        </p>
+
+      </section>
+
     </div>
+
   </main>
+
+  <footer>
+    <p class="fake-copy">© 2026 School Lost & Found</p>
+
+  </footer>
 
 </body>
 </html>
