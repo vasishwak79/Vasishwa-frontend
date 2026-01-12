@@ -3,56 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Login</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_admin_login.css">
+  <link rel="stylesheet" href="style_general.css">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="admin-login-page">
 
 <!-- Navigation Bar -->
-<header>
-  <h1>Lost & Found</h1>
-  <nav>
-    <a href="index.html" class="nav-btn">Home</a>
-    <a href="login.html" class="nav-btn">Login</a>
-  </nav>
-</header>
+  <header>
+    <h1 class="site-title">School Lost & Found</h1>
+
+    <nav class="nav-right">
+      <a href="index.html" class="nav-btn ">Home</a>
+      <a href="items.html" class="nav-btn ">Items</a>
+      <a href="admin.html" class="nav-btn active">Admin</a>
+
+      <!-- User Dropdown (ONLY when logged in) -->
+      <div id="user-menu" class="user-menu">
+        <button class="user-btn">
+          <span id="username-display">User</span> ▼
+        </button>
+        <div class="dropdown-content">
+          <a href="login.html">User Login</a>
+          <a href="#" id="logoutBtn">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
 
 <!-- main login page container -->
-<section class="container">
-<div class="login-wrapper">
+ <main class="container">
+  <section>
     <!-- page title -->
-    <h2 style="color:white">Admin Login</h2>
+    <h2 class="admin-style">Admin Login</h2>
 
     <!-- login form card -->
-    <form id="adminLoginForm" class="card form login-card" aria-label="Administrator Login Form">
+    <form id="adminLoginForm" aria-label="Administrator Login Form">
 
-      <label for="username" class="form-label">Username</label>
-      <input 
-        id="username"
-        name="username" 
-        type="text" 
-        class="input-small"
-        placeholder="Enter username" 
-        required
-      >
+      <section>
+        <label for="username" class="form-label">Username: </label>
 
-      <label for="password" class="form-label">Password</label>
-      <input 
-        id="password"
-        name="password" 
-        type="password" 
-        class="input-small"
-        placeholder="Enter password" 
-        required
-      >
+        <input 
+          id="username"
+          name="username" 
+          type="text" 
+          class="input-small"
+          placeholder="Enter username" 
+          required
+        >
 
-      <button type="submit" class="btn-primary">Login</button>
+      </section>
+
+      <section>
+        <label for="password" class="form-label">Password: </label>
+
+        <input 
+          id="password"
+          name="password" 
+          type="password" 
+          class="input-small"
+          placeholder="Enter password" 
+          required
+        >
+        
+      </section>
+
+      <section>
+        <button type="submit" class="btn-primary">Login</button>
+      </section>
+
     </form>
-  </div>
-  <!-- errer or success message-->
-  <p id="msg" class="feedback"></p>
+    <!-- errer or success message-->
+    <p id="msg" class="feedback"></p>
 
-</section>
+  </section>
+
+</main>
+
+<footer>
+  <p class="fake-copy">© 2026 School Lost & Found</p>
+</footer>
 
 <script src="admin_login.js"></script>
 
