@@ -1,0 +1,110 @@
+body {
+    font-family: "League Spartan", sans-serif;
+    background-color: #1d4e89; /* fallback background */
+    margin: 0;
+    padding: 0;
+}
+
+body.items-page {
+    font-family: "League Spartan", sans-serif;
+    background-image: url('colorful-block-print-frame-beige-background.jpg') !important;
+    background-size: 100% auto;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Semi-transparent central container */
+.container {
+    max-width: 900px;
+    margin: 50px auto; /* centers horizontally */
+    padding: 40px;
+    background-color: rgba(210, 202, 186, 0.577); /* semi-transparent white-ish color*/
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.page-title {
+    text-align:center;
+    font-size: 40px;
+    color: #000000;
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+.page-subtitle {
+    text-align:center;
+    font-size: 21px;
+    color: #3b9986;
+    margin-bottom: 25px;
+}
+/* The grid container */
+.item-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* Individual card styling */
+.item {
+    background: rgba(255, 255, 255, 0.1); /* Lighter glass for the cards */
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    width: 800px; /* Fixed card width */
+    text-align: center;
+    color: rgb(0, 0, 0);
+    transition: transform 0.3s ease;
+}
+
+.item:hover {
+    transform: translateY(-5px);
+}
+
+.item img {
+    width: 100%;          /* Fills the card width */
+    max-height: 150px;    /* Keeps height consistent */
+    object-fit: cover;    /* Crops image to fit without stretching */
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.search-bar-items {
+    justify-content: center;
+    width: 850px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.433);
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    margin-bottom: 20px;
+    outline: none;
+    backdrop-filter: blur(10px);
+}
+
+.search-bar-items::placeholder {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.item button {
+    background-color: #4F7F8A;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.item button:hover {
+    background-color: #3F6770;
+}
