@@ -57,19 +57,22 @@ body.items-page {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 20px;
-    max-width: 100%; /* Fixed card width */
+    width: 850px;
+    max-width: 100%; /* card width */
     display: flex; 
     flex-wrap: nowrap; /* Allows the button to drop to its own line at the bottom */
     flex-direction: row;
     justify-content: space-between;
     gap: 20px;
-    text-align: left; /* Changed from center to left for the new layout */
+    text-align: left; /* Changed from center to left for the layout */
     color: rgb(0, 0, 0);
     transition: transform 0.3s ease;
+    overflow: visible;
     align-items: center;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.164);
     position: relative; 
-    padding-bottom: 90px; 
+    padding-bottom: 100px; 
+    height: auto;
     min-height: 350px;
 }
 
@@ -80,10 +83,12 @@ body.items-page {
 
 .item-text-content {
     flex: 1;             /* Takes up all available space on the left */
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
+    text-align: left;
+    word-break: break-all;
     word-wrap: break-word;
     overflow-wrap: break-word;
     min-height: 150px;
@@ -91,8 +96,8 @@ body.items-page {
 }
 
 .item img {
-    width: 450px;          /* Fills the card width */
-    height: 300px;    /* Keeps height consistent */
+    max-width: 50%;          /* Fills half the card width */
+    height: auto;    /* Keeps height consistent */
     object-fit: contain;    /* Crops image to fit without stretching */
     flex-shrink: 0;
     border-radius: 10px;
@@ -123,15 +128,17 @@ body.items-page {
     position: absolute;
     bottom: 25px;
     left: 50%;
-    display: block;
-    width: 80%;
+    transform: translateX(-50%); 
+    width: 90%;
+    max-width: 750px;
     background-color: #4F7F8A;
     color: white;
-    padding: 8px 20px;
+    padding: 12px 20px;
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
-    margin: 10px auto 0 auto;
+    border: none;
+    margin: 0;
     transition: background 0.3s;
 }
 
