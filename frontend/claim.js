@@ -34,6 +34,7 @@ if (claimForm) {
       username,
       name: e.target.name.value.trim(),
       reason: e.target.reason.value.trim(),
+      features: e.target.features.value.trim(),
       teacher: e.target.teacher.value.trim()
     };
 
