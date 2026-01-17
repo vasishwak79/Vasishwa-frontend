@@ -1,5 +1,9 @@
 const API_URL = "http://localhost:4000/api";
 
+let allItems = [];      // Global storage for the fetched items
+let currentPage = 1;    // Tracks current page
+const itemsPerPage = 7; // Max items per page
+
 /* ===================== CLAIM HANDLER ===================== */
 function claimItem() {
   const userToken = localStorage.getItem("userToken");
@@ -19,7 +23,7 @@ if (document.getElementById("recent-items")) {
       const container = document.getElementById("recent-items");
       container.innerHTML = items.map(item => `
         <div class="item">
-          ${item.photo ? `<img src="${item.photo}" alt="${item.title}">` : ""}
+          ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
           <h3>${item.title}</h3>
           <p>${item.description}</p>
           <small>Location: ${item.location}</small><br>
@@ -46,22 +50,72 @@ if (document.getElementById("items-list")) {
             i.description.toLowerCase().includes(term) ||
             i.location.toLowerCase().includes(term)
           );
+          currentPage = 1;
           renderItems(filtered);
         });
     });
 }
 
-function renderItems(items) {
+function renderItems(itemsToRender) {
   const container = document.getElementById("items-list");
-  container.innerHTML = items.map(item => `
+  container.innerHTML = ""
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const paginatedItems = itemsToRender.slice(start, end);
+
+  container.innerHTML = paginatedItems.map(item => `
     <div class="item">
-      ${item.photo ? `<img src="${item.photo}" alt="${item.title}">` : ""}
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-      <small>Location: ${item.location}</small><br>
+      <div class="item-text-content"> 
+        <h1>${item.title}</h1>
+        <h3>${item.description}</h3>
+        <h3>Location: ${item.location}</h3><br>
+      </div>
+
+      ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
+
       <button onclick="claimItem()">Claim</button>
     </div>
   `).join("");
+
+  renderPaginationControls(itemsToRender);
+}
+
+function renderPaginationControls(originalItems) {
+  const totalPages = Math.ceil(originalItems.length / itemsPerPage);
+  const container = document.getElementById("items-list");
+
+  if (totalPages <= 1) return; // Hide controls if all items fit on one page
+
+  const nav = document.createElement("div");
+  nav.className = "pagination-nav";
+  nav.style.width = "100%";
+  nav.style.display = "flex";
+  nav.style.justifyContent = "center";
+  nav.style.gap = "20px";
+  nav.style.marginTop = "20px";
+
+  nav.innerHTML = `
+    <button id="prevBtn" class="nav-btn" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+    <span style="color: black; font-weight: bold;">Page ${currentPage} of ${totalPages}</span>
+    <button id="nextBtn" class="nav-btn" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+  `;
+
+  container.appendChild(nav);
+
+  // Button Listeners
+  document.getElementById("prevBtn").onclick = () => {
+    currentPage--;
+    // Re-fetch or re-filter is needed here if no global variable exists
+    // To make this work, we use the 'originalItems' passed into the function
+    renderItems(originalItems);
+    window.scrollTo(0, 0);
+  };
+
+  document.getElementById("nextBtn").onclick = () => {
+    currentPage++;
+    renderItems(originalItems);
+    window.scrollTo(0, 0);
+  };
 }
 
 /* ===================== UPLOAD ITEM ===================== */
