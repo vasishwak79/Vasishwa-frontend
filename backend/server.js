@@ -91,7 +91,7 @@ app.get("/api/items", async (req, res) => {
   res.json(items);
 });
 
-app.post("/api/items", upload.single("photo"), async (req, res) => {
+app.post("/api/items", upload.single("image"), async (req, res) => {
   try {
     const { title, description, location } = req.body;
     const photo = req.file ? `/uploads/${req.file.filename}` : null;
