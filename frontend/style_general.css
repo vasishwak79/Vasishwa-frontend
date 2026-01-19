@@ -94,3 +94,84 @@ footer {
     opacity: 0.8;
     justify-content: left;
 }
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #beb7a4;
+    cursor: pointer;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+
+    header {
+        padding: 15px 20px;
+    }
+
+    .site-title {
+        font-size: 26px;
+    }
+
+    /* Show hamburger */
+    .nav-toggle {
+        display: block;
+    }
+
+    /* Hide nav by default */
+    .nav-right {
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        display: none;
+        z-index: 999;
+        width: 220px;
+    }
+
+    /* Show when active */
+    .nav-right.open {
+        display: flex;
+    }
+
+    .nav-btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* User dropdown inside mobile menu */
+    .user-menu {
+        width: 100%;
+    }
+
+    .user-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-content {
+        position: static;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .dropdown-content a {
+        text-align: center;
+    }
+    
+    html, body {
+        overflow-x: hidden;
+    }
+}
