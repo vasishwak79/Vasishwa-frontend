@@ -1,64 +1,96 @@
+/* ===================== CHECK FOR LOGOUT MESSAGE ===================== */
+// This runs immediately when the Home page loads
+if (localStorage.getItem("logoutMessage") === "true") {
+  alert("You've been logged out due to inactivity");
+  
+  // Clear the flag so the message doesn't appear again on refresh
+  localStorage.removeItem("logoutMessage");
+}
+
 const API_URL = "http://localhost:4000/api";
 
-let allItems = [];      // Global storage for the fetched items
-let currentPage = 1;    // Tracks current page
-const itemsPerPage = 7; // Max items per page
+let allItems = []; 
+let currentPage = 1;
+const itemsPerPage = 7;
+
+/* ===================== TEMP MESSAGES ===================== */
+function showTemporaryMessage(element, text, isError = false) {
+  if (!element) return;
+  element.style.color = isError ? "red" : "green";
+  element.innerText = text;
+  element.style.display = "block";
+
+  // Clear message after 5 seconds
+  setTimeout(() => {
+    element.innerText = "";
+    element.style.display = "none";
+  }, 5000);
+}
 
 /* ===================== CLAIM HANDLER ===================== */
-function claimItem() {
+function claimItem(id) {
   const userToken = localStorage.getItem("userToken");
   if (!userToken) {
     alert("You must log in to claim an item.");
     window.location.href = "login.html";
     return;
   }
+  // Save ID and redirect
+  localStorage.setItem("selectedItemId", id);
   window.location.href = "claim.html";
 }
 
 /* ===================== LOAD RECENT ITEMS ===================== */
-if (document.getElementById("recent-items")) {
+const recentContainer = document.getElementById("recent-items");
+if (recentContainer) {
   fetch(`${API_URL}/items?recent=true`)
     .then(res => res.json())
     .then(items => {
-      const container = document.getElementById("recent-items");
-      container.innerHTML = items.map(item => `
+      recentContainer.innerHTML = items.map(item => `
         <div class="item">
           ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
           <h3>${item.title}</h3>
           <p>${item.description}</p>
           <small>Location: ${item.location}</small><br>
-          <button onclick="claimItem()">Claim</button>
+          <button onclick="claimItem(${item.id})">Claim</button>
         </div>
       `).join("");
-    });
+    })
+    .catch(err => console.error("Recent items error:", err));
 }
 
 /* ===================== LOAD ALL ITEMS + SEARCH ===================== */
-if (document.getElementById("items-list")) {
+const itemsListContainer = document.getElementById("items-list");
+if (itemsListContainer) {
   fetch(`${API_URL}/items`)
     .then(res => res.json())
-    .then(items => renderItems(items));
+    .then(items => {
+      allItems = items;
+      renderItems(allItems);
+    })
+    .catch(err => console.error("Load items error:", err));
 
-  document.getElementById("search-bar")
-    .addEventListener("input", e => {
+  const searchBar = document.getElementById("search-bar");
+  if (searchBar) {
+    searchBar.addEventListener("input", e => {
       const term = e.target.value.toLowerCase();
-      fetch(`${API_URL}/items`)
-        .then(res => res.json())
-        .then(items => {
-          const filtered = items.filter(i =>
-            i.title.toLowerCase().includes(term) ||
-            i.description.toLowerCase().includes(term) ||
-            i.location.toLowerCase().includes(term)
-          );
-          currentPage = 1;
-          renderItems(filtered);
-        });
+      // Re-fetch or filter local data
+      const filtered = allItems.filter(i =>
+        i.title.toLowerCase().includes(term) ||
+        i.description.toLowerCase().includes(term) ||
+        i.location.toLowerCase().includes(term)
+      );
+      currentPage = 1;
+      renderItems(filtered);
     });
+  }
 }
 
 function renderItems(itemsToRender) {
   const container = document.getElementById("items-list");
-  container.innerHTML = ""
+  if (!container) return;
+  
+  container.innerHTML = "";
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   const paginatedItems = itemsToRender.slice(start, end);
@@ -70,10 +102,8 @@ function renderItems(itemsToRender) {
         <h3>${item.description}</h3>
         <h3>Location: ${item.location}</h3><br>
       </div>
-
       ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
-
-      <button onclick="claimItem()">Claim</button>
+      <button onclick="claimItem(${item.id})">Claim</button>
     </div>
   `).join("");
 
@@ -81,37 +111,37 @@ function renderItems(itemsToRender) {
 }
 
 function renderPaginationControls(originalItems) {
-  const totalPages = Math.ceil(originalItems.length / itemsPerPage);
   const container = document.getElementById("items-list");
+  if (!container) return;
 
-  if (totalPages <= 1) return; // Hide controls if all items fit on one page
+  const totalPages = Math.ceil(originalItems.length / itemsPerPage);
+  if (totalPages <= 1) return; 
 
   const nav = document.createElement("div");
   nav.className = "pagination-nav";
-  nav.style.width = "100%";
-  nav.style.display = "flex";
-  nav.style.justifyContent = "center";
-  nav.style.gap = "20px";
-  nav.style.marginTop = "20px";
+  nav.style.cssText = "width:100%; display:flex; justify-content:center; gap:20px; margin-top:20px;";
 
   nav.innerHTML = `
-    <button id="prevBtn" class="nav-btn" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+    <button id="prevBtn" class="nav-btn">Previous</button>
     <span style="color: black; font-weight: bold;">Page ${currentPage} of ${totalPages}</span>
-    <button id="nextBtn" class="nav-btn" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+    <button id="nextBtn" class="nav-btn">Next</button>
   `;
 
   container.appendChild(nav);
 
-  // Button Listeners
-  document.getElementById("prevBtn").onclick = () => {
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  if (currentPage === 1) prevBtn.disabled = true;
+  if (currentPage === totalPages) nextBtn.disabled = true;
+
+  prevBtn.onclick = () => {
     currentPage--;
-    // Re-fetch or re-filter is needed here if no global variable exists
-    // To make this work, we use the 'originalItems' passed into the function
     renderItems(originalItems);
     window.scrollTo(0, 0);
   };
 
-  document.getElementById("nextBtn").onclick = () => {
+  nextBtn.onclick = () => {
     currentPage++;
     renderItems(originalItems);
     window.scrollTo(0, 0);
@@ -119,9 +149,24 @@ function renderPaginationControls(originalItems) {
 }
 
 /* ===================== UPLOAD ITEM ===================== */
-if (document.getElementById("upload-form")) {
-  document.getElementById("upload-form").addEventListener("submit", e => {
+const uploadForm = document.getElementById("upload-form");
+if (uploadForm) {
+  uploadForm.addEventListener("submit", e => {
     e.preventDefault();
+
+    const fileInput = document.getElementById("itemPhoto");
+    const fileError = document.getElementById("file-error");
+    const message = document.getElementById("upload-message"); // Get message box
+
+    if (fileError) fileError.classList.add("hidden");
+
+    if (!fileInput.files || fileInput.files.length === 0) {
+      if (fileError) {
+        fileError.textContent = "Please upload an image.";
+        fileError.classList.remove("hidden");
+      }
+      return;
+    }
 
     const formData = new FormData(e.target);
 
@@ -129,45 +174,67 @@ if (document.getElementById("upload-form")) {
       method: "POST",
       body: formData
     })
-      .then(res => res.json())
+      .then(res => res.json()) 
       .then(data => {
-        document.getElementById("upload-message").innerText =
-          data.success ? " Item submitted for review!" : "❌ Upload failed";
-        e.target.reset();
+        const imagePreview = document.getElementById("imagePreview");
+
+        if (data.success) {
+          showTemporaryMessage(message, "Item submitted for review!", false);
+
+          e.target.reset();
+          if (imagePreview) {
+            imagePreview.src = "";
+            imagePreview.classList.add("hidden");
+          }
+          const fileName = document.getElementById("fileName");
+          if (fileName) fileName.textContent = "No file selected";
+        } else {
+
+          showTemporaryMessage(message, "Upload failed", true);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        showTemporaryMessage(message, "Server error", true);
       });
   });
 }
 
-/* ===================== ADMIN PENDING ITEMS ===================== */
-if (document.getElementById("pending-items")) {
-  fetch(`${API_URL}/pending`)
-    .then(res => res.json())
-    .then(items => {
-      const container = document.getElementById("pending-items");
-      container.innerHTML = items.map(item => `
-        <div class="item">
-          ${item.photo ? `<img src="${item.photo}" alt="${item.title}">` : ""}
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-          <button onclick="approveItem(${item.id})">Approve</button>
-        </div>
-      `).join("");
-    });
-}
+// File Input Listeners
+const fileInput = document.getElementById("itemPhoto");
+const imagePreview = document.getElementById("imagePreview");
+const fileNameDisplay = document.getElementById("fileName");
 
-function approveItem(id) {
-  fetch(`${API_URL}/approve/${id}`, {
-    method: "PUT"
-  }).then(() => location.reload());
+if (fileInput) {
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    const fileError = document.getElementById("file-error");
+    if (fileError) fileError.classList.add("hidden");
+    if (!file) return;
+
+    if (fileNameDisplay) fileNameDisplay.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      imagePreview.src = reader.result;
+      imagePreview.classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 /* ===================== USER DISPLAY + LOGOUT ===================== */
 const userToken = localStorage.getItem("userToken");
 const username = localStorage.getItem("username");
+const userMenu = document.getElementById("user-menu");
 
 document.querySelectorAll("#username-display").forEach(el => {
   if (username) el.textContent = username;
 });
+
+if (username && userMenu) {
+  userMenu.classList.remove("hidden");
+}
 
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
@@ -179,11 +246,17 @@ if (logoutBtn) {
 }
 
 /* ===================== PAGE PROTECTION ===================== */
-if (
-  (document.getElementById("upload-form") ||
-   document.getElementById("items-list")) &&
-  !userToken
-) {
+if ((document.getElementById("upload-form") || document.getElementById("items-list")) && !userToken) {
   alert("You must log in to access this page.");
   window.location.href = "login.html";
+}
+
+/* ====================== MOBILE NAVIGATION MENU ======================== */
+const navToggle = document.querySelector(".nav-toggle");
+const navMenu = document.querySelector(".nav-right");
+
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
 }
