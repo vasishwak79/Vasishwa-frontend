@@ -7,7 +7,7 @@ body {
 
 body.items-page {
     font-family: "League Spartan", sans-serif;
-    background-image: url('colorful-block-print-frame-beige-background.jpg') !important;
+    background-image: url('picture-for-claim-page.jpg') !important;
     background-size: 100% auto;
     background-position: center;
     background-attachment: fixed;
@@ -41,6 +41,7 @@ body.items-page {
     color: #3b9986;
     margin-bottom: 25px;
 }
+
 /* The grid container */
 .item-grid {
     display: flex;
@@ -58,13 +59,13 @@ body.items-page {
     border-radius: 15px;
     padding: 20px;
     width: 850px;
-    max-width: 100%; /* card width */
+    max-width: 100%; /* Fixed card width */
     display: flex; 
     flex-wrap: nowrap; /* Allows the button to drop to its own line at the bottom */
     flex-direction: row;
     justify-content: space-between;
     gap: 20px;
-    text-align: left; /* Changed from center to left for the layout */
+    text-align: left; /* Changed from center to left for the new layout */
     color: rgb(0, 0, 0);
     transition: transform 0.3s ease;
     overflow: visible;
@@ -138,7 +139,7 @@ body.items-page {
     cursor: pointer;
     font-weight: bold;
     border: none;
-    margin: 0;
+    margin: 0; /* Removed margin auto as it breaks absolute positioning */
     transition: background 0.3s;
 }
 
@@ -190,4 +191,75 @@ body.items-page {
     color: rgba(0, 0, 0, 0.4);
     cursor: not-allowed;
     box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  body.items-page {
+    background-size: cover;
+    background-attachment: scroll;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 20px;
+    margin: 20px 12px;
+  }
+
+  .page-title {
+    font-size: 30px;
+  }
+
+  .page-subtitle {
+    font-size: 18px;
+  }
+
+  .item {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 30px;
+    min-height: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.274);
+  }
+
+  .item-text-content {
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .item img {
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .item button {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+  }
+
+  .search-bar-items {
+    width: 100%;
+  }
+
+  .pagination-nav span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    font-family: "League Spartan", sans-serif;
+  }
+
+  .pagination-nav .nav-btn {
+    width: 100px;
+    background-color: #4F7F8A; /* Matches your claim button color */
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px; /* Rounded pill shape like your claim button */
+    cursor: pointer;
+    font-weight: bold;
+    font-family: "League Spartan", sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
 }
