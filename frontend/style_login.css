@@ -131,13 +131,29 @@ body.login-page {
   }
 }
 
-/* Mobile adjustments */
 @media (max-width: 480px) {
-  .login-page .login-card {
+
+  body.login-page {
+    background-size: cover;
+    background-attachment: scroll;
+  }
+
+  .container {
+    width: 80%;
+    margin: 60px auto;
     padding: 24px;
   }
 
   .login-page h2 {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
+  }
+
+  .btn-primary {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .signup-text {
+    font-size: 0.95rem;
   }
 }
