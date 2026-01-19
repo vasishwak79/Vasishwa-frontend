@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style_login.css">
   <link rel="stylesheet" href="style_general.css">
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -14,9 +15,10 @@
   <header>
     <h1 class="site-title">School Lost & Found</h1>
 
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+
     <nav class="nav-right">
       <a href="index.html" class="nav-btn ">Home</a>
-      <a href="items.html" class="nav-btn ">Items</a>
       <a href="admin.html" class="nav-btn ">Admin</a>
 
       <!-- User Dropdown (ONLY when logged in) -->
@@ -25,6 +27,7 @@
           <span id="username-display">User</span> ▼
         </button>
         <div class="dropdown-content">
+          <a href="profile.html" id="profileLink">Profile</a>
           <a href="login.html">User Login</a>
           <a href="#" id="logoutBtn">Logout</a>
         </div>
