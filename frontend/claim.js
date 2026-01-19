@@ -1,6 +1,21 @@
+// ------------------ TEMP MESSAGE ------------------
+function showTemporaryMessage(element, text, isError = false) {
+  if (!element) return;
+  element.style.color = isError ? "darkRed" : "black"; // Or "green" if you prefer
+  element.textContent = text;
+  element.style.display = "block";
+
+  // Clear message after 5 seconds
+  setTimeout(() => {
+    element.textContent = "";
+    element.style.display = "none";
+  }, 5000);
+}
+
 // ------------------ DISPLAY LOGGED-IN USER ------------------
 const usernameElems = document.querySelectorAll("#username-display");
 const username = localStorage.getItem("username");
+const email = localStorage.getItem("email");
 if (username && usernameElems.length > 0) {
   usernameElems.forEach(el => el.textContent = username);
 }
@@ -30,11 +45,21 @@ if (claimForm) {
     e.preventDefault();
     const msg = document.getElementById("claim-message");
 
+    const itemId = localStorage.getItem("selectedItemId");
+
+    if (!itemId) {
+        alert("Error: No item selected. Please go back and select an item.");
+        window.location.href = "index.html"; 
+        return;
+    }
+
     const formData = {
+      item_id: itemId,
       username,
+      email,
       name: e.target.name.value.trim(),
       reason: e.target.reason.value.trim(),
-      features: e.target.features.value.trim(),
+      features: e.target.features ? e.target.features.value.trim() : "",
       teacher: e.target.teacher.value.trim()
     };
 
@@ -49,18 +74,31 @@ if (claimForm) {
       });
 
       const data = await res.json();
+      
       if (data.success) {
-        msg.style.color = "lightgreen";
-        msg.textContent = "Claim submitted! Waiting for admin approval.";
+        // SUCCESS: Message clears in 5s
+        showTemporaryMessage(msg, "Claim submitted! Waiting for admin approval.", false);
+        
+        localStorage.removeItem("selectedItemId");
         e.target.reset();
+
       } else {
-        msg.style.color = "red";
-        msg.textContent = data.message || "Failed to submit claim.";
+        // FAIL: Message clears in 5s
+        showTemporaryMessage(msg, data.message || "Failed to submit claim.", true);
       }
     } catch (err) {
       console.error(err);
-      msg.style.color = "red";
-      msg.textContent = "Server error — try again.";
+      showTemporaryMessage(msg, "Server error — try again.", true);
     }
+  });
+}
+
+/* ====================== MOBILE NAVIGATION MENU ======================== */
+const navToggle = document.querySelector(".nav-toggle");
+const navMenu = document.querySelector(".nav-right");
+
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
   });
 }
