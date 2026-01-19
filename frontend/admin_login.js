@@ -29,3 +29,13 @@ document.getElementById("adminLoginForm").addEventListener("submit", async funct
     msg.style.color = "red";
   }
 });
+
+/* ====================== MOBILE NAVIGATION MENU ======================== */
+const navToggle = document.querySelector(".nav-toggle");
+const navMenu = document.querySelector(".nav-right");
+
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
+}
