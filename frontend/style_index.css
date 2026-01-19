@@ -20,8 +20,8 @@ body.home-page {
     margin: 50px auto; /* centers horizontally */
     padding: 40px;
     background-color: rgba(210, 202, 186, 0.577); /* semi-transparent white-ish color*/
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -72,6 +72,10 @@ body.home-page {
     color: white;
     padding: 12px 25px;
     border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
     transition: background-color 0.3s;
 }
 
@@ -118,6 +122,10 @@ body.home-page {
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, background 0.2s ease;
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.274);
 }
 
 .item:hover {
@@ -192,171 +200,58 @@ footer {
     opacity: 0.8;
     justify-content: left;
 }
-/* ===================== UPLOAD PAGE ===================== */
-.upload-container {
+
+@media (max-width: 768px) {
+
+  body.home-page {
+    background-size: cover;
+    background-attachment: scroll;
+  }
+
+  .container {
+    margin: 20px 12px;
+    padding: 20px;
+  }
+
+  .home-title,
+  .home-title-highlight {
+    font-size: 28px;
+  }
+
+  .home-subtitle {
+    font-size: 16px;
+  }
+
+  .home-buttons {
+    flex-direction: column;
+    gap: 15px;
+    width: auto;
+  }
+
+  .home-btn {
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+  }
+
+  .item-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .item {
     width: 100%;
     max-width: 100%;
-    margin: 0;
-    padding: 40px 0;
+    box-sizing: border-box;
     text-align: center;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.274);
+  }
 
-.page-title {
-    font-size: 2.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+  footer {
+    text-align: center;
+  }
 
-.page-subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 25px;
-    opacity: 0.9;
-}
-
-.upload-illustration {
-    width: 250px;
-    margin: 10px auto 30px auto;
-    display: block;
-}
-
-.upload-form {
-    background: #f1c84a;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.input-field,
-.textarea-field,
-.file-input {
-    width: 95.5%;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-bottom: 18px;
-    font-size: 1rem;
-}
-
-.textarea-field {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.file-input {
-    background: white;
-    width: 96.5%;
-}
-
-.upload-btn {
-    width: 100%;
-    padding: 14px;
-    background: #1d4e89;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.upload-btn:hover {
-    background: #163b66;
-}
-
-/* ===================== ITEMS PAGE ===================== */
-.items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-}
-
-.item-card {
-    background: #f1c84a;
-    color: #1d4e89;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.item-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-}
-
-.item-image {
-    width: 110px;
-    height: 110px;
-    object-fit: contain;
-    margin-bottom: 15px;
-}
-
-.item-name {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-}
-
-.item-info {
-    font-size: 0.95rem;
-    margin-bottom: 6px;
-}
-
-/* ===================== ADMIN PAGE ===================== */
-.admin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-.admin-card {
-    background: #f1c84a;
-    color: #1d4e89;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-}
-
-.admin-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.admin-actions button {
-    flex: 1;
-    padding: 10px;
-    font-weight: bold;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-approve {
-    background: #1d4e89;
-    color: white;
-}
-
-.btn-approve:hover {
-    background: #163b66;
-}
-
-.btn-deny {
-    background: #c0392b;
-    color: white;
-}
-
-.btn-deny:hover {
-    background: #992d22;
+  .fake-copy {
+    margin-left: 0;
+  }
 }
