@@ -3,9 +3,11 @@
 <head>
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>School Lost & Found | Home</title>
   <link rel="stylesheet" href="style_general.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_index.css">
+
   <script src="script.js" defer></script>
 </head>
 
@@ -14,6 +16,8 @@
   <!-- Header / Navigation -->
   <header>
     <h1 class="site-title">School Lost & Found</h1>
+
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
 
     <nav class="nav-right">
       <a href="index.html" class="nav-btn active">Home</a>
@@ -25,6 +29,7 @@
           <span id="username-display">User</span> ▼
         </button>
         <div class="dropdown-content">
+          <a href="profile.html" id="profileLink">Profile</a>
           <a href="login.html">User Login</a>
           <a href="#" id="logoutBtn">Logout</a>
         </div>
@@ -49,7 +54,6 @@
         <div class="home-buttons">
           <a href="upload.html" class="home-btn">Report an Item</a>
           <a href="items.html" class="home-btn">Search for an Item</a>
-          <a href="claim.html" class="home-btn">Claim an Item</a>
         </div>
 
         <h2 class="home-title ">Recently Added Items</h2>
