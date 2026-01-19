@@ -119,13 +119,25 @@ body.admin-login-page {
   }
 }
 
-/* Mobile adjustments */
 @media (max-width: 480px) {
-  .admin-login-page .login-card {
+
+  body.admin-login-page {
+    background-size: cover;
+    background-attachment: scroll;
+  }
+
+  .container {
+    width: 80%;
+    margin: 60px auto;
     padding: 24px;
   }
 
   .admin-login-page h2 {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
+  }
+
+  .btn-primary {
+    padding: 14px;
+    font-size: 1rem;
   }
 }
