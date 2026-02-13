@@ -7,7 +7,7 @@ const initDB = require("./db");
 
 const app = express();
 const upload = multer({ dest: "uploads/" });
-const SECRET = "supersecretkey";
+const SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 app.use(cors());
 app.use(express.json());
@@ -423,6 +423,9 @@ app.get("/api/user/claims/:username", async (req, res) => {
 });
 
 /* ===================== START SERVER ===================== */
-app.listen(4000, () => {
-  console.log("Backend running at http://localhost:4000");
+const PORT = process.env.PORT || 4000;
+const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
 });
