@@ -424,7 +424,6 @@ app.get("/api/user/claims/:username", async (req, res) => {
 
 /* ===================== START SERVER ===================== */
 const PORT = process.env.PORT || 4000;
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
