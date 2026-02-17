@@ -2,7 +2,7 @@ body {
     font-family: "League Spartan", sans-serif;
     background-color: #1d4e89; /* fallback background */
     margin: 0;
-    padding: 0;
+    padding: 0; 
 }
 
 body.home-page {
@@ -201,6 +201,71 @@ footer {
     justify-content: left;
 }
 
+/* FAQ SECTION  */
+.faq-section {
+  margin-top: 60px;
+  text-align: left;
+}
+
+.faq-title {
+  font-size: 32px;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #000;
+}
+
+.faq-item {
+  margin-bottom: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.274);
+}
+
+/* Question layout */
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(12px);
+  border: none;
+  padding: 18px 22px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2F7F6F;
+  cursor: pointer;
+  transition: background 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.274);
+}
+
+/* Arrow */
+.faq-arrow {
+  font-size: 18px;
+  transition: transform 0.35s ease;
+}
+
+/* Rotate when open */
+.faq-item.active .faq-arrow {
+  transform: rotate(180deg);
+}
+
+/* Better animation */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(255,255,255,0.2);
+  padding: 0 20px;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+.faq-item.active .faq-answer {
+  max-height: 250px;
+  padding: 12px 20px 18px;
+}
+
+
+/* MOBILE */
 @media (max-width: 768px) {
 
   body.home-page {
@@ -247,6 +312,28 @@ footer {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.274);
   }
 
+    .faq-question {
+    font-size: 17px;
+    padding: 20px;
+  }
+
+  .faq-answer p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .faq-question:hover {
+    background: rgba(255,255,255,0.55);
+  }
+
+  .faq-title {
+    font-size: 26px;
+  }
+
+  .faq-item {
+    margin-bottom: 16px;
+  }
+
   footer {
     text-align: center;
   }
@@ -254,28 +341,4 @@ footer {
   .fake-copy {
     margin-left: 0;
   }
-}
-
-/* ===================== STICKY FOOTER FIX ===================== */
-
-/* Make the page take full viewport height */
-html, body {
-  height: 100%;
-}
-
-/* Turn body into a column layout */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Let main content grow to push footer down */
-main {
-  flex: 1;
-}
-
-/* Ensure footer stays at bottom */
-footer {
-  margin-top: auto;
 }
