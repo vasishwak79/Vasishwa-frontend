@@ -59,6 +59,24 @@ if (recentContainer) {
     .catch(err => console.error("Recent items error:", err));
 }
 
+/* ================= FAQ ACCORDION ================= */
+document.querySelectorAll(".faq-question").forEach(btn => {
+  btn.addEventListener("click", e => {
+    e.preventDefault();
+
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains("active");
+
+    // Close all
+    document.querySelectorAll(".faq-item").forEach(i => {
+      i.classList.remove("active");
+    });
+
+    // Reopen if it was closed
+    if (!isOpen) item.classList.add("active");
+  });
+});
+
 /* ===================== LOAD ALL ITEMS + SEARCH ===================== */
 const itemsListContainer = document.getElementById("items-list");
 if (itemsListContainer) {
