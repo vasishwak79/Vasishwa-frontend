@@ -119,6 +119,30 @@ body.signup-page {
   color: #3F6770;
 }
 
+.password-checklist {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.password-checklist li {
+  margin-bottom: 6px;
+  color: #b00020; /* red default */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.password-checklist li.valid {
+  color: #2e7d32; /* green */
+}
+
+.check-icon {
+  font-weight: bold;
+}
+
 /* Subtle animation */
 @keyframes fadeIn {
   from {
