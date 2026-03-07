@@ -102,6 +102,8 @@ async function fetchPending() {
           <h3>${item.title}</h3>
           <p>${item.description}</p>
           <p><strong>Location:</strong> ${item.location}</p>
+          <p>Catgory: ${item.category}</p>
+          <small>Found on: ${item.dateFound}</small><br> </div>
           ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
           <div class="action-buttons">
             <button class="approve-btn" onclick="approveItem(${item.id})">Approve</button>
