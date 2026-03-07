@@ -42,9 +42,9 @@
   <!-- Main Content -->
   <main>
 
-    <div class="container">
+    <section class="home-container">
 
-      <section class="home">
+      <div class="home">
         
         <h2>
           <span class="home-title">Welcome to the</span>
@@ -52,7 +52,10 @@
         </h2>
 
         <p class="home-subtitle">
-          Lost something? Found something? Use this site to report found items, search for belongings, or claim what’s yours.
+          Every year, students misplace water bottles, hoodies, phones, calculators, and other important belongings. 
+          Our School Lost and Found website makes it easy to reconnect students with their items quickly and securely.
+          Whether you’ve found something or lost something, this platform allows you to report items, search listings,
+          and submit claims — all in one place.
         </p>
 
         <div class="home-buttons">
@@ -60,10 +63,20 @@
           <a href="items.html" class="home-btn">Search for an Item</a>
         </div>
 
-        <h2 class="home-title ">Recently Added Items</h2>
-        <div id="recent-items" class="item-grid"></div>
+        <div class="scroll-indicator">↓ Scroll to View Items ↓</div>
 
-      </section>
+      </div>
+    </section>
+
+    <div class="container recent-container fade-section">
+
+      <h2 class="section-title">Recently Added Items</h2>
+      <div id="recent-items" class="item-grid"></div>
+
+    </div>
+
+
+    <div class="container faq-container fade-section">
 
       <section class="faq-section">
 
@@ -135,6 +148,8 @@
     </div>
 
   </main>
+
+  <button id="backToTop" title="Go to top">Back to the top ↑</button>
 
   <footer>
     <p class="fake-copy">© 2025–2026 FBLA Website Coding & Development Project | Alliance Academy of Innovation</p>
