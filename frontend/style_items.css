@@ -27,6 +27,107 @@ body.items-page {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
+.custom-select {
+    position: relative;
+    flex: 1;
+    user-select: none;
+}
+
+.select-trigger {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.25); 
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.129);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.select-trigger:hover {
+    background: rgba(255, 255, 255, 0.4); /* Slight highlight on hover */
+}
+
+/* This is the part that fixes the "blue list" issue */
+.options-list {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    right: 0;
+    margin-top: 5px; 
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.custom-select {
+    position: relative;
+    flex: 0 0 250px;
+    height: 55px; /* Matches search bar height */
+}
+
+.custom-select.open .options-list {
+    display: block;
+}
+
+.option {
+    padding: 12px 25px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #333;
+}
+
+.option:hover {
+    background: rgba(79, 127, 138, 0.2); /* Light version of your theme color */
+}
+
+.option.active {
+    background: rgba(79, 127, 138, 0.1);
+    font-weight: bold;
+}
+
+.search-filter-container {
+    display: flex;
+    flex-direction: row; /* Forces side-by-side */
+    justify-content: center; /* Centers the group in the container */
+    align-items: stretch; /* Makes them the same height */
+    gap: 15px; /* Space between the two */
+    width: 90%;
+    max-width: 1000px; /* Adjust based on your layout preference */
+    margin: 0 auto 30px auto; /* Centers the whole container */
+}
+
+/* Search Bar Fix */
+.search-bar-items {
+    flex: 2; /* Search bar takes 2/3 of the space */
+    width: auto; /* Remove the 90% or 100% width that causes shifting */
+    margin: 0; /* Remove auto margins that break flex alignment */
+    height: 55px;
+    padding: 0 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.433);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Custom Select Container Fix */
+.custom-select {
+    flex: 1; /* Dropdown takes 1/3 of the space */
+    min-width: 200px; /* Prevents it from getting too squashed */
+}
+
 .page-title {
     text-align:center;
     font-size: 40px;
