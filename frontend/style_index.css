@@ -1,25 +1,25 @@
-body {
-    font-family: "League Spartan", sans-serif;
-    background-color: #1d4e89; /* fallback background */
-    margin: 0;
-    padding: 0; 
+html {
+  scroll-behavior: smooth;
 }
 
-body.home-page {
+body {
     font-family: "League Spartan", sans-serif;
     background-image: url('pexels-nietjuhart-1906440.jpg') !important;
     background-size: 100% auto;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
+    background-color: rgba(173, 166, 153, 0.95); /* fallback background */
+    margin: 0;
+    padding: 0; 
 }
 
 /* Semi-transparent central container */
 .container {
     max-width: 900px;
-    margin: 50px auto; /* centers horizontally */
+    margin: 80px auto; /* centers horizontally */
     padding: 40px;
-    background-color: rgba(210, 202, 186, 0.577); /* semi-transparent white-ish color*/
+    background-color: rgba(210, 202, 186, 0.641); /* semi-transparent white-ish color*/
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
     border-radius: 12px;
@@ -28,6 +28,72 @@ body.home-page {
 }
 
 /* Main Section */
+.home-container {
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+/* Dark overlay for readability */
+.home-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+/* Keep content above overlay */
+.home-container .home {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+    padding: 20px;
+}
+
+.home {
+    max-width: 900px;
+    height: auto;
+    margin: 80px auto; /* centers horizontally */
+    padding: 40px;
+    background-color: rgba(210, 202, 186, 0.621); /* semi-transparent white-ish color*/
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.home-container .home-title-highlight{
+    color: #4F7F8A;
+}
+
+/* Make text white in first section */
+.home-container .home-title,
+.home-container .home-subtitle 
+.home-container .home .scroll-indicator{
+    color: black;
+}
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .home {
     text-align: center;
 }
@@ -51,10 +117,14 @@ body.home-page {
     text-decoration: underline;
 }
 
-.home-subtitle {
+.home-container .home-subtitle {
     font-size: 21px;
     color: #2F7F6F;
-    margin-bottom: 25px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    line-height: 1.6;
+    letter-spacing: 0.5px; 
+    padding: 0 10px;
 }
 
 /* Buttons in Home Section */
@@ -180,6 +250,42 @@ body.home-page {
 
 .item button:hover {
   background-color: #3F6770;
+}
+
+#backToTop {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999 !important; /* Ensure it is above EVERYTHING */
+  
+  /* Visuals */
+  background-color: #4F7F8A;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+  /* Force it to stay hidden initially */
+  display: block; /* Keep as block but hide with opacity */
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(20px);
+  transition: all 0.4s ease-in-out;
+}
+
+/* Force it to show when the class is added */
+#backToTop.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+#backToTop:hover {
+  background-color: #3F6770;
+  transform: scale(1.05);   
 }
 
 footer {
