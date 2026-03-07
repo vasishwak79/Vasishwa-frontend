@@ -79,53 +79,109 @@ document.querySelectorAll(".faq-question").forEach(btn => {
 
 /* ===================== LOAD ALL ITEMS + SEARCH ===================== */
 const itemsListContainer = document.getElementById("items-list");
-if (itemsListContainer) {
-  fetch(`${API_URL}/items`)
-    .then(res => res.json())
-    .then(items => {
-      allItems = items;
-      renderItems(allItems);
-    })
-    .catch(err => console.error("Load items error:", err));
+let selectedValue = "all"; // Track custom dropdown state
 
-  const searchBar = document.getElementById("search-bar");
-  if (searchBar) {
-    searchBar.addEventListener("input", e => {
-      const term = e.target.value.toLowerCase();
-      // Re-fetch or filter local data
-      const filtered = allItems.filter(i =>
-        i.title.toLowerCase().includes(term) ||
-        i.description.toLowerCase().includes(term) ||
-        i.location.toLowerCase().includes(term)
-      );
-      currentPage = 1;
-      renderItems(filtered);
-    });
-  }
+if (itemsListContainer) {
+    fetch(`${API_URL}/items`)
+        .then(res => res.json())
+        .then(items => {
+            allItems = items;
+            renderItems(allItems);
+        })
+        .catch(err => console.error("Load items error:", err));
+
+    const searchBar = document.getElementById("search-bar");
+    const customSelect = document.getElementById('category-dropdown');
+
+    // --- Custom Dropdown Logic ---
+    if (customSelect) {
+        const trigger = customSelect.querySelector('.select-trigger');
+        const options = customSelect.querySelectorAll('.option');
+
+        trigger.addEventListener('click', () => {
+            customSelect.classList.toggle('open');
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                // Update UI state
+                options.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                trigger.querySelector('span').innerText = option.innerText;
+                
+                // Update filter value and close
+                selectedValue = option.getAttribute('data-value');
+                customSelect.classList.remove('open');
+                
+                performFilter();
+            });
+        });
+
+        // Close when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!customSelect.contains(e.target)) {
+                customSelect.classList.remove('open');
+            }
+        });
+    }
+
+    function performFilter() {
+        const searchTerm = searchBar ? searchBar.value.toLowerCase() : "";
+
+        const filtered = allItems.filter(item => {
+            const matchesSearch = 
+                item.title.toLowerCase().includes(searchTerm) ||
+                item.description.toLowerCase().includes(searchTerm) ||
+                item.location.toLowerCase().includes(searchTerm);
+
+            const matchesCategory = 
+                selectedValue === "all" || 
+                item.category === selectedValue;
+
+            return matchesSearch && matchesCategory;
+        });
+
+        currentPage = 1;
+        renderItems(filtered);
+    }
+
+    if (searchBar) {
+        searchBar.addEventListener("input", performFilter);
+    }
 }
 
+/* ===================== RENDER FUNCTIONS ===================== */
 function renderItems(itemsToRender) {
-  const container = document.getElementById("items-list");
-  if (!container) return;
-  
-  container.innerHTML = "";
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const paginatedItems = itemsToRender.slice(start, end);
+    const container = document.getElementById("items-list");
+    if (!container) return;
+    
+    container.innerHTML = "";
+    
+    // Add "No items found" message if empty
+    if (itemsToRender.length === 0) {
+        container.innerHTML = `<p style="text-align:center; width:100%; font-size:1.2rem; color:#555;">No items match your search.</p>`;
+        return;
+    }
 
-  container.innerHTML = paginatedItems.map(item => `
-    <div class="item">
-      <div class="item-text-content"> 
-        <h1>${item.title}</h1>
-        <h3>${item.description}</h3>
-        <h3>Location: ${item.location}</h3><br>
-      </div>
-      ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
-      <button onclick="claimItem(${item.id})">Claim</button>
-    </div>
-  `).join("");
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const paginatedItems = itemsToRender.slice(start, end);
 
-  renderPaginationControls(itemsToRender);
+    container.innerHTML = paginatedItems.map(item => `
+        <div class="item">
+            <div class="item-text-content"> 
+                <h1>${item.title}</h1>
+                <p><strong>Category:</strong> ${item.category || 'Other'}</p> 
+                <h3>${item.description}</h3>
+                <h3>Location: ${item.location}</h3>
+                <small>Found on: ${item.dateFound || 'N/A'}</small><br> 
+            </div>
+            ${item.photo ? `<img src="http://localhost:4000${item.photo}" alt="${item.title}" />` : ""}
+            <button onclick="claimItem(${item.id})">Claim</button>
+        </div>
+    `).join("");
+
+    renderPaginationControls(itemsToRender);
 }
 
 function renderPaginationControls(originalItems) {
@@ -238,6 +294,55 @@ if (fileInput) {
       imagePreview.classList.remove("hidden");
     };
     reader.readAsDataURL(file);
+  });
+}
+
+/* ================= FADE IN ON SCROLL ================= */
+const faders = document.querySelectorAll(".fade-section");
+
+const appearOptions = {
+  threshold: 0.15, 
+  rootMargin: "0px 0px -50px 0px" 
+};
+
+const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    } else {
+      entry.target.classList.remove("visible");
+    }
+  });
+}, appearOptions);
+
+faders.forEach(section => {
+  appearOnScroll.observe(section);
+});
+
+/* ================= BACK TO TOP BUTTON ================= */
+const backToTopBtn = document.getElementById("backToTop");
+
+// Using addEventListener is safer than window.onscroll
+window.addEventListener('scroll', () => {
+  if (backToTopBtn) {
+    // Check scroll position
+    const scrollPos = window.scrollY || document.documentElement.scrollTop;
+    
+    if (scrollPos > 300) {
+      backToTopBtn.classList.add("show");
+    } else {
+      backToTopBtn.classList.remove("show");
+    }
+  }
+});
+
+// Click Listener
+if (backToTopBtn) {
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   });
 }
 
