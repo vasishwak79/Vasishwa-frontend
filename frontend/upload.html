@@ -45,6 +45,25 @@
 
       <form class="upload-form" id="upload-form" enctype="multipart/form-data">
 
+        <label class="form-label" for="itemCategory">Category</label>
+          <select id="itemCategory" name="category" class="input-small" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Electronics">Electronics (Phones, Airpods, etc.)</option>
+            <option value="Clothing">Clothing (Hoodies, Jackets, etc.)</option>
+            <option value="Water Bottles">Water Bottles</option>
+            <option value="School Supplies">School Supplies (Calculators, Notebooks)</option>
+            <option value="Personal Items">Personal Items (Glasses, Keys, Wallets)</option>
+            <option value="Other">Other</option>
+          </select>
+
+        <label class="form-label" for="dateFound">Date Found</label>
+        <input 
+          type="date" 
+          id="dateFound" 
+          name="dateFound" 
+          class="input-small" 
+          required />
+
         <label class="form-label" for="itemTitle">Item Name</label>
         <input 
         type="text" 
@@ -109,7 +128,7 @@
   </main>
 
 <footer>
-  <p class="fake-copy">© 2026 School Lost & Found</p>
+  <p class="fake-copy">© 2025–2026 FBLA Website Coding & Development Project | Alliance Academy of Innovation</p>
 </footer>
 
 <script src="script.js" defer></script>
