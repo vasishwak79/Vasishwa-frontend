@@ -7,7 +7,7 @@ const initDB = require("./db");
 
 const app = express();
 const upload = multer({ dest: "uploads/" });
-const SECRET = process.env.JWT_SECRET || "supersecretkey";
+const SECRET = "supersecretkey";
 
 app.use(cors());
 app.use(express.json());
@@ -27,6 +27,27 @@ let db;
 
   }
 
+  try {
+  await db.exec(`ALTER TABLE admins ADD COLUMN role TEXT DEFAULT 'moderator'`);
+  console.log("Role column added to admins table");
+  } catch (err) {
+
+  }
+
+  try {
+  await db.exec(`ALTER TABLE items ADD COLUMN category TEXT`);
+  console.log("Category column added to items table");
+  } catch (err) {
+
+  }
+
+  try {
+  await db.exec(`ALTER TABLE items ADD COLUMN dateFound TEXT`);
+  console.log("Date Found column added to items table");
+  } catch (err) {
+
+  }
+
   await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +62,8 @@ let db;
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT UNIQUE,
       email TEXT UNIQUE,
-      password TEXT NOT NULL
+      password TEXT NOT NULL,
+      role TEXT DEFAULT 'moderator'
     );
   `);
 
@@ -51,6 +73,8 @@ let db;
       title TEXT,
       description TEXT,
       location TEXT,
+      category TEXT,
+      dateFound TEXT,
       photo TEXT,
       status TEXT DEFAULT 'pending',
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -80,13 +104,26 @@ let db;
   if (!admin) {
     const hashed = await bcrypt.hash("password", 10);
     await db.run(
-      "INSERT INTO admins (username, password) VALUES (?, ?)",
+      "INSERT INTO admins (username, password, role) VALUES (?, ?, 'super')",
       "admin",
       hashed
     );
     console.log("Default admin created: admin / password");
   }
 })();
+
+function requireAdmin(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "No token" });
+
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    req.admin = decoded;
+    next();
+  } catch {
+    res.status(403).json({ error: "Invalid token" });
+  }
+}
 
 /* ===================== ITEMS ===================== */
 app.get("/api/items", async (req, res) => {
@@ -105,35 +142,30 @@ app.get("/api/items", async (req, res) => {
 
 app.post("/api/items", upload.single("image"), async (req, res) => {
   try {
-    const { title, description, location } = req.body;
+    const { title, description, location, category, dateFound } = req.body; // Added category/dateFound
     const photo = req.file ? `/uploads/${req.file.filename}` : null;
 
-    if (!title || !description || !location) {
+    if (!title || !description || !location || !category || !dateFound) {
       return res.json({ success: false, message: "All fields are required" });
     }
 
     await db.run(
       `
-      INSERT INTO items (title, description, location, photo, status, createdAt)
-      VALUES (?, ?, ?, ?, 'pending', datetime('now'))
+      INSERT INTO items (title, description, location, category, dateFound, photo, status, createdAt)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending', datetime('now'))
       `,
       title,
       description,
       location,
+      category,
+      dateFound,
       photo
     );
 
-    res.json({
-      success: true,
-      message: "Item submitted for review!"
-    });
-
+    res.json({ success: true, message: "Item submitted for review!" });
   } catch (err) {
     console.error("Item upload error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Could not submit item"
-    });
+    res.status(500).json({ success: false, message: "Could not submit item" });
   }
 });
 
@@ -153,8 +185,57 @@ app.post("/api/admin/login", async (req, res) => {
   if (!valid)
     return res.json({ success: false, message: "Invalid password" });
 
-  const token = jwt.sign({ admin: username }, SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ admin: username, role:admin.role }, SECRET, { expiresIn: "1h" });
   res.json({ success: true, token });
+});
+
+/* ===================== ADD/DELETE USERS ===================== */
+app.get("/api/admin/users", requireAdmin, async (req, res) => {
+  const users = await db.all(
+    "SELECT id, username, email FROM users"
+  );
+  res.json(users);
+});
+
+app.delete("/api/admin/users/:id", requireAdmin, async (req, res) => {
+  await db.run("DELETE FROM claims WHERE username = (SELECT username FROM users WHERE id = ?)", req.params.id);
+  await db.run("DELETE FROM users WHERE id = ?", req.params.id);
+  res.json({ success: true });
+});
+
+/* ===================== ADD/DELETE ADMINS ===================== */
+app.get("/api/admin/admins", requireAdmin, async (req, res) => {
+  if (req.admin.role !== "super") {
+    return res.status(403).json({ error: "Access denied" });
+  }
+
+  const admins = await db.all(
+    "SELECT id, username, role FROM admins"
+  );
+  res.json(admins);
+});
+
+app.post("/api/admin/admins", requireAdmin, async (req, res) => {
+  if (req.admin.role !== "super") return res.status(403).json({ error: "Denied" });
+
+  const { username, password, role } = req.body;
+  const hashed = await bcrypt.hash(password, 10);
+
+  await db.run(
+    "INSERT INTO admins (username, password, role) VALUES (?, ?, ?)",
+    username,
+    hashed,
+    role
+  );
+
+  res.json({ success: true });
+});
+
+app.delete("/api/admin/admins/:id", requireAdmin, async (req, res) => {
+  if (req.admin.role !== "super") return res.status(403).json({ error: "Denied" });
+
+  await db.run("DELETE FROM admins WHERE id = ?", req.params.id);
+  res.json({ success: true });
 });
 
 /* ===================== USER LOGIN ===================== */
@@ -423,8 +504,6 @@ app.get("/api/user/claims/:username", async (req, res) => {
 });
 
 /* ===================== START SERVER ===================== */
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`);
+app.listen(4000, () => {
+  console.log("Backend running at http://localhost:4000");
 });
