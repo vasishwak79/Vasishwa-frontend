@@ -379,9 +379,27 @@ footer {
     background-attachment: scroll;
   }
 
-  .container {
-    margin: 20px 12px;
-    padding: 20px;
+  .home-container {
+    height: auto;
+    min-height: 100vh;
+    padding: 40px 0;
+  }
+
+  .container, .home {
+    /* Center the glass box with small side gaps */
+    width: 92%; 
+    margin: 20px auto; 
+    padding: 25px 15px;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+    height: auto; /* Allow box to grow with text */
+  }
+  
+  .home {
+    margin-right: 10px;
+    margin-left: 10px;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   .home-title,
