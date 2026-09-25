@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Chaithra 🌸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Petit+Formal+Script&family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================================
+     COLOR TOKENS — sakura pink / white, deep red text
+     ============================================================ */
+  :root {
+    --blossom-50:  #fff6f8;   /* page background */
+    --blossom-100: #fdeaf0;   /* alternate section wash */
+    --blossom-200: #fbdce6;   /* soft borders / dividers */
+    --blossom-300: #f7bdd0;   /* petals, decorative */
+    --blossom-500: #ef9ab5;   /* mid accent, dots, buttons */
+    --blossom-600: #e17b9c;   /* hover / active accent */
+    --white:       #ffffff;
+    --maroon-700:  #7a1533;   /* headings — dark red */
+    --maroon-500:  #93233f;   /* body text — softer dark red */
+    --maroon-300:  #b45770;   /* muted / captions */
+
+    --font-script: 'Petit Formal Script', 'Brush Script MT', cursive;
+    --font-serif:  'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --font-sans:   'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Keep the sakura identity consistent regardless of system theme —
+     this page is a designed keepsake/invitation, not a utility app. */
+  :root, :root[data-theme="dark"] {
+    --bg: var(--blossom-50);
+    --bg-alt: var(--blossom-100);
+    --text: var(--maroon-500);
+    --heading: var(--maroon-700);
+  }
+
+  * { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  h1, h2, h3 { color: var(--heading); margin: 0; }
+
+  a, button { font-family: inherit; }
+
+  ::selection { background: var(--blossom-300); color: var(--maroon-700); }
+
+  /* ============================================================
+     FALLING PETALS — the page's one ambient motion
+     ============================================================ */
+  .petal-field {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .petal {
+    position: absolute;
+    top: -8vh;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(135deg, var(--blossom-300), var(--blossom-500));
+    border-radius: 0% 60% 0% 60%;
+    opacity: 0;
+    animation-name: drift-fall, drift-fade;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+  }
+
+  @keyframes drift-fall {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(6vw, 55vh) rotate(180deg); }
+    100% { transform: translate(-4vw, 112vh) rotate(360deg); }
+  }
+  @keyframes drift-fade {
+    0%, 100% { opacity: 0; }
+    10%, 85% { opacity: 0.55; }
+  }
+
+  /* ============================================================
+     LAYOUT SHELL
+     ============================================================ */
+  main { position: relative; z-index: 2; }
+
+  section { padding: 6rem 1.5rem; }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* ============================================================
+     HERO — top placeholder title + Happy Birthday wordmark
+     ============================================================ */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(2rem + env(safe-area-inset-top, 0px)) 1.5rem 3rem;
+  }
+
+  /* EDIT ME: replace this line with your own top title / page heading */
+  .hero-pretitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    color: var(--maroon-300);
+    letter-spacing: 0.02em;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-script {
+    font-family: var(--font-script);
+    font-size: clamp(3.2rem, 11vw, 7rem);
+    line-height: 1;
+    color: var(--maroon-700);
+  }
+
+  .hero-name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 9vw, 5.5rem);
+    letter-spacing: 0.01em;
+    margin-top: 0.5rem;
+  }
+
+  .hero-sub {
+    margin-top: 1.25rem;
+    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    color: var(--maroon-500);
+  }
+
+  .hero-sub strong {
+    color: var(--maroon-700);
+    font-weight: 700;
+  }
+
+  .hero-sprig {
+    margin-top: 3rem;
+    width: 64px;
+    height: auto;
+    opacity: 0.85;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+    color: var(--maroon-300);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .scroll-cue span {
+    width: 1px;
+    height: 30px;
+    background: linear-gradient(var(--blossom-500), transparent);
+    animation: cue-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes cue-pulse {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
+
+  /* ============================================================
+     MEMORY ROWS — mini slideshow + caption, alternating sides
+     ============================================================ */
+  .memories { padding-top: 2rem; padding-bottom: 2rem; }
+
+  .memories-intro {
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto 4.5rem;
+  }
+
+  .memories-intro h2 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+  }
+
+  .memories-intro p {
+    margin-top: 0.75rem;
+    color: var(--maroon-300);
+    font-size: 1.05rem;
+  }
+
+  .story {
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+    padding: 3rem 0;
+  }
+
+  .story:not(:last-child) {
+    border-bottom: 1px solid var(--blossom-200);
+  }
+
+  /* odd rows: photo right, text left | even rows: photo left, text right */
+  .story:nth-child(odd)  { flex-direction: row-reverse; }
+  .story:nth-child(even) { flex-direction: row; }
+
+  .story-media, .story-text { flex: 1 1 0; min-width: 0; }
+
+  .story-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 0% 50% 50% 50%;
+    background: var(--blossom-100);
+    border: 1px solid var(--blossom-200);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--maroon-500);
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  .story-text h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+  }
+
+  /* EDIT ME: swap this placeholder caption for the real story/memory text */
+  .story-text p {
+    margin-top: 0.85rem;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--maroon-500);
+    max-width: 42ch;
+  }
+
+  /* --- mini slideshow / carousel --- */
+  .carousel {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-width: 420px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--blossom-100);
+    border: 1px solid var(--blossom-200);
+    box-shadow: 0 18px 40px -22px rgba(122, 21, 51, 0.35);
+  }
+
+  .carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(155deg, var(--blossom-100), var(--blossom-200));
+  }
+
+  /* EDIT ME: replace each .carousel-slide with <img src="your-photo.jpg" alt="..."> 
+     sized to fill the slide (width:100%; height:100%; object-fit:cover;).
+     Because this page runs in a locked-down preview, images must be embedded
+     as base64 data URIs (or uploaded as page assets) rather than linked from
+     an external site — a normal <img src="https://..."> will not load here. */
+  .carousel-slide .ph-icon {
+    font-size: 2.1rem;
+    opacity: 0.7;
+  }
+  .carousel-slide .ph-label {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--maroon-300);
+    font-size: 0.95rem;
+  }
+
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--blossom-200);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--maroon-700);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-nav:hover { background: var(--white); }
+  .carousel-nav:focus-visible { outline: 2px solid var(--maroon-500); outline-offset: 2px; }
+  .carousel-prev { left: 10px; }
+  .carousel-next { right: 10px; }
+
+  .carousel-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+  .carousel-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(122, 21, 51, 0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .carousel-dot[aria-current="true"] {
+    background: var(--maroon-500);
+    transform: scale(1.2);
+  }
+  .carousel-dot:focus-visible { outline: 2px solid var(--maroon-500); outline-offset: 2px; }
+
+  /* ============================================================
+     ABOUT HER — closing card
+     ============================================================ */
+  .about {
+    background: var(--bg-alt);
+    padding: 6rem 1.5rem 7rem;
+  }
+
+  .about-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--blossom-200);
+    border-radius: 40px 12px 40px 12px;
+    padding: clamp(2.25rem, 6vw, 3.5rem);
+    text-align: center;
+    box-shadow: 0 30px 60px -30px rgba(122, 21, 51, 0.3);
+  }
+
+  .about-card h2 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+  }
+
+  /* EDIT ME: replace this placeholder paragraph with a real note about her */
+  .about-card p {
+    margin-top: 1.25rem;
+    font-size: 1.08rem;
+    line-height: 1.75;
+    color: var(--maroon-500);
+  }
+
+  .about-sprig {
+    width: 48px;
+    margin: 0 auto 1.25rem;
+    opacity: 0.85;
+  }
+
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem calc(3rem + env(safe-area-inset-bottom, 0px));
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--maroon-300);
+    font-size: 1rem;
+  }
+
+  /* ============================================================
+     SCROLL REVEALS
+     ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .petal { animation: none; opacity: 0; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .carousel-track { transition: none; }
+    .scroll-cue span { animation: none; }
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 760px) {
+    section { padding: 4rem 1.25rem; }
+    .story, .story:nth-child(odd), .story:nth-child(even) {
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    .carousel { max-width: 100%; aspect-ratio: 4 / 3.4; }
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="petal-field" id="petalField" aria-hidden="true"></div>
+
+  <main>
+
+    <!-- ============================== HERO ============================== -->
+    <section class="hero">
+      <!-- EDIT ME: this is the free-standing title at the very top of the page — replace with whatever you'd like -->
+      <p class="hero-pretitle">Add Your Own Title Here</p>
+
+      <h1 class="hero-script">Happy Birthday</h1>
+      <div class="hero-name">Chaithra</div>
+      <p class="hero-sub">She's turning <strong>16</strong> 🎂</p>
+
+      <svg class="hero-sprig" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 60 C32 40 32 24 32 4" stroke="#e17b9c" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="24" cy="18" r="6" fill="#f7bdd0"/>
+        <circle cx="40" cy="14" r="6" fill="#ef9ab5"/>
+        <circle cx="32" cy="6" r="6" fill="#fbdce6"/>
+        <circle cx="20" cy="30" r="5" fill="#fbdce6"/>
+        <circle cx="44" cy="28" r="5" fill="#f7bdd0"/>
+      </svg>
+
+      <div class="scroll-cue"><span></span>scroll</div>
+    </section>
+
+    <!-- ============================== MEMORIES ============================== -->
+    <section class="memories">
+      <div class="wrap">
+
+        <div class="memories-intro reveal">
+          <h2>A Few of Her Moments</h2>
+          <!-- EDIT ME -->
+          <p>Add a short intro line here, then fill in each memory below with your own photos and captions.</p>
+        </div>
+
+        <!-- ---- Memory 1 : photo right / text left ---- -->
+        <article class="story reveal">
+          <div class="story-media">
+            <div class="carousel" data-carousel>
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <span class="ph-icon">🌸</span>
+                  <span class="ph-label">Add photo 1</span>
+                </div>
+                <div class="carousel-slide">
+                  <span class="ph-icon">🌸</span>
+                  <span class="ph-label">Add photo 2</span>
+                </div>
+                <div class="carousel-slide">
+                  <span class="ph-icon">🌸</span>
+                  <span class="ph-label">Add photo 3</span>
+                </div>
+              </div>
+              <button class="carousel-nav carousel-prev" aria-label="Previous photo">&#8249;</button>
+              <button class="carousel-nav carousel-next" aria-label="Next photo">&#8250;</button>
+              <div class="carousel-dots"></div>
+            </div>
+          </div>
+          <div class="story-text">
+            <span class="story-badge">1</span>
+            <h3>Add a Caption Title</h3>
+            <!-- EDIT ME -->
+            <p>Write your caption or memory about this photo set here — where it was, why it matters, whatever you'd like her to read.</p>
+          </div>
+        </article>
+
+        <!-- ---- Memory 2 : photo left / text right ---- -->
+        <article class="story reveal">
+          <div class="story-media">
+            <div class="carousel" data-carousel>
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <span class="ph-icon">🌸</span>
+                  <span class="ph-label">Add photo 1</span>
+                </div>
+                <div class="carousel-slide">
+                  <span class="ph-icon">🌸</span>
+                  <span class="ph-label">Add photo 2</span>
+                </div>
+                <div class="carousel-slide">
+                  <span class="ph-icon">🌸</span>
+                  <span class="ph-label">Add photo 3</span>
+                </div>
+              </div>
+              <button class="carousel-nav carousel-prev" aria-label="Previous photo">&#8249;</button>
+              <button class="carousel-nav carousel-next" aria-label="Next photo">&#8250;</button>
+              <div class="carousel-dots"></div>
+            </div>
+          </div>
+          <div class="story-text">
+            <span class="story-badge">2</span>
+            <h3>Add a Caption Title</h3>
+            <!-- EDIT ME -->
+            <p>Write your caption or memory about this photo set here — where it was, why it matters, whatever you'd like her to read.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============================== ABOUT HER ============================== -->
+    <section class="about">
+      <div class="about-card reveal">
+        <svg class="about-sprig" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 60 C32 40 32 24 32 4" stroke="#e17b9c" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="24" cy="18" r="5" fill="#f7bdd0"/>
+          <circle cx="40" cy="14" r="5" fill="#ef9ab5"/>
+          <circle cx="32" cy="6" r="5" fill="#fbdce6"/>
+        </svg>
+        <h2>About Chaithra</h2>
+        <!-- EDIT ME: replace with your own words about her -->
+        <p>Write something here about who she is, what she loves, and why she means so much to you. This whole section is yours to fill in.</p>
+      </div>
+    </section>
+
+    <footer>🌸 Happy 16th Birthday, Chaithra 🌸</footer>
+
+  </main>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- falling petals ---------- */
+  if (!reduceMotion) {
+    var field = document.getElementById('petalField');
+    var count = window.innerWidth < 700 ? 10 : 18;
+    for (var i = 0; i < count; i++) {
+      var petal = document.createElement('div');
+      petal.className = 'petal';
+      var left = Math.random() * 100;
+      var duration = 10 + Math.random() * 9;
+      var delay = Math.random() * -18;
+      var size = 9 + Math.random() * 8;
+      petal.style.left = left + 'vw';
+      petal.style.width = size + 'px';
+      petal.style.height = size + 'px';
+      petal.style.animationDuration = duration + 's, ' + duration + 's';
+      petal.style.animationDelay = delay + 's, ' + delay + 's';
+      field.appendChild(petal);
+    }
+  }
+
+  /* ---------- scroll reveal ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ---------- mini carousels ---------- */
+  document.querySelectorAll('[data-carousel]').forEach(function (root) {
+    var track = root.querySelector('.carousel-track');
+    var slides = Array.prototype.slice.call(root.querySelectorAll('.carousel-slide'));
+    var dotsWrap = root.querySelector('.carousel-dots');
+    var prevBtn = root.querySelector('.carousel-prev');
+    var nextBtn = root.querySelector('.carousel-next');
+    var index = 0;
+    var timer = null;
+
+    slides.forEach(function (_, i) {
+      var dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+      dot.addEventListener('click', function () { goTo(i); restart(); });
+      dotsWrap.appendChild(dot);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+
+    function render() {
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      dots.forEach(function (d, i) {
+        d.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+    }
+
+    function goTo(i) {
+      index = (i + slides.length) % slides.length;
+      render();
+    }
+
+    function next() { goTo(index + 1); }
+    function prev() { goTo(index - 1); }
+
+    function start() {
+      if (reduceMotion || slides.length < 2) return;
+      timer = setInterval(next, 4200);
+    }
+    function stop() { if (timer) clearInterval(timer); }
+    function restart() { stop(); start(); }
+
+    prevBtn.addEventListener('click', function () { prev(); restart(); });
+    nextBtn.addEventListener('click', function () { next(); restart(); });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+
+    render();
+    start();
+  });
+
+})();
+</script>
+
+</body>
+</html>
